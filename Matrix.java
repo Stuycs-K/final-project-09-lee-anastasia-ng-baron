@@ -1,29 +1,29 @@
 import java.util.*;
 public class Matrix {
-  protected ArrayList<double []>m;
+  protected ArrayList<int[]> m;
 
   Matrix() {
-    m = new ArrayList<double []>();
+    m = new ArrayList<int[]>();
   }//constructor
 
-  public void addColumn(double x, double y, double z) {
-    double[] col = {x, y, z, 1};
+  public void addColumn(int a, int b, int c, int d) {
+    int[] col = {a, b, c, d};
     m.add(col);
   }//addColumn
 
   public void ident() {
-    m = new ArrayList<double []>();
+    m = new ArrayList<int[]>();
     for (int i=0; i<4; i++) {
-      double[] point = new double[4];
+      int[] point = new int[4];
       point[i] = 1;
       m.add(point);
     }
   }//ident
 
   public void mult(Matrix a) {
-    double[] tmp = new double[4];
+    int[] tmp = new int[4];
     for (int c=0; c<m.size(); c++) {
-      double[] point = m.get(c);
+      int[] point = m.get(c);
       //copy values from m over
       for (int r=0; r < point.length; r++)
         tmp[r] = point[r];
@@ -38,10 +38,10 @@ public class Matrix {
   }//mult
 
   public void clear() {
-    m = new ArrayList<double[] >();
+    m = new ArrayList<int[]>();
   }//clear
 
-  public double[] get(int i) {
+  public int[] get(int i) {
     return m.get(i);
   }
 
@@ -61,7 +61,7 @@ public class Matrix {
     }
 
     for (int i=0; i<4; i++) {
-      for (double[] p : m) {
+      for (int[] p : m) {
         s+= p[i] + " ";
       }
       s+= "\n";
