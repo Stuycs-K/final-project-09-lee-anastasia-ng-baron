@@ -1,9 +1,21 @@
 import java.util.*;
 public class encrypt {
-    Matrix state = new Matrix();
-    public void makeState(byte[] input) {
+    static Matrix state = new Matrix();
+    public static void makeState(byte[] input) {
         for (int i = 0; i < 4; i++) {
             state.addColumn(input[4*i], input[4*i+1], input[4*i+2], input[4*i+3]);
         }
+    }
+    public static int getDeg(byte b) {
+        int deg = 0;
+        while (b != 0) {
+
+        }
+        return deg;
+    }
+    public static void main(String[] args) {
+        byte b = (byte)11000011;
+        System.out.println((int)b);
+        //System.out.println(getDeg(b));
     }
 }
