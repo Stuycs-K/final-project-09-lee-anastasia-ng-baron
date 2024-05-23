@@ -16,9 +16,10 @@ info
 
 ## Baron Ng
 
-### date x
+### 5/22/24
 
-info
+- Read and Compiled relevant Background Info on AES
+- Placed Info in HISTORY.md
 
 ### date y
 
