@@ -2,7 +2,9 @@
 # THIS DOCUMENT IS REQUIRED
 ## Group Info
 Anastasia Lee, Baron Ng
+
 Group Name: Cryptic BarLee
+
 Topic: Advanced Encryption Standard (AES)
 ## Overview
 ## Instructions
