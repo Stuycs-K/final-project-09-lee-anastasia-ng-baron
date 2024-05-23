@@ -2,9 +2,12 @@
 
 ## Anastasia Lee
 
-### date x
+### 5/22/24
 
-info
+- Added use cases for AES to presentation
+- Updated README
+- Added Matrix class, edited it to store bytes instead of doubles
+- Added makeState method (first step of encryption)
 
 ### date y
 
