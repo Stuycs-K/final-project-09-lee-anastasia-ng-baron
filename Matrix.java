@@ -1,47 +1,47 @@
 import java.util.*;
 public class Matrix {
-  protected ArrayList<int[]> m;
+  protected ArrayList<byte[]>m;
 
   Matrix() {
-    m = new ArrayList<int[]>();
+    m = new ArrayList<byte[]>();
   }//constructor
 
-  public void addColumn(int a, int b, int c, int d) {
-    int[] col = {a, b, c, d};
+  public void addColumn(byte a, byte b, byte c, byte d) {
+    byte[] col = {a, b, c, d};
     m.add(col);
   }//addColumn
 
   public void ident() {
-    m = new ArrayList<int[]>();
+    m = new ArrayList<byte[]>();
     for (int i=0; i<4; i++) {
-      int[] point = new int[4];
+      byte[] point = new byte[4];
       point[i] = 1;
       m.add(point);
     }
   }//ident
 
   public void mult(Matrix a) {
-    int[] tmp = new int[4];
+    byte[] tmp = new byte[4];
     for (int c=0; c<m.size(); c++) {
-      int[] point = m.get(c);
+      byte[] point = m.get(c);
       //copy values from m over
       for (int r=0; r < point.length; r++)
         tmp[r] = point[r];
 
       for (int r=0; r < point.length; r++) {
-        m.get(c)[r] = a.m.get(0)[r] * tmp[0] +
+        m.get(c)[r] = (byte)(a.m.get(0)[r] * tmp[0] +
           a.m.get(1)[r] * tmp[1] +
           a.m.get(2)[r] * tmp[2] +
-          a.m.get(3)[r] * tmp[3];
+          a.m.get(3)[r] * tmp[3]);
       }
     }
   }//mult
 
   public void clear() {
-    m = new ArrayList<int[]>();
+    m = new ArrayList<byte[]>();
   }//clear
 
-  public int[] get(int i) {
+  public byte[] get(int i) {
     return m.get(i);
   }
 
@@ -54,14 +54,13 @@ public class Matrix {
   }
 
   public String toString() {
-
     String s = "";
     if (m.size() == 0) {
       return s;
     }
 
     for (int i=0; i<4; i++) {
-      for (int[] p : m) {
+      for (byte[] p : m) {
         s+= p[i] + " ";
       }
       s+= "\n";
