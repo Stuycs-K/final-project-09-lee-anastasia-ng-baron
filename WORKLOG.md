@@ -24,4 +24,5 @@
 
 ### date y
 
-info
+- Noted the functions for the algorthm, no details yet
+- Simplified the necessary preliminary understanding (ignoring math) in SIMPLIFIED.md
