@@ -9,9 +9,10 @@
 - Added Matrix class, edited it to store bytes instead of doubles
 - Added makeState method (first step of encryption)
 
-### date y
+### 5/23/24
 
-info
+- Attempted to start implementing the evaluation of inverses
+- Read to understand Galois Fields better
 
 
 ## Baron Ng
@@ -23,4 +24,5 @@ info
 
 ### date y
 
-info
+- Noted the functions for the algorthm, no details yet
+- Simplified the necessary preliminary understanding (ignoring math) in SIMPLIFIED.md

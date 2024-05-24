@@ -1,3 +1,5 @@
+# Preliminary Understanding
+
 ### IO and Bits
 
 The input and output are blocks: a sequence of 128 bits
@@ -53,6 +55,75 @@ s1,3
 s2,3
 s3,3
 
-### Things I have no idea what it is
+# Mathematical Preliminaries
 
-Galois Field
+## Galois Field
+
+## Addition 
+
+## Multiplication
+
+# The Algorithm
+
+Cipher()
+InvCipher()
+KeyExpansion()
+
+## Cipher()
+
+SubBytes()
+ShiftRows()
+MixColumns()
+AddRoundKey()
+
+### SubBytes()
+
+SBox()
+
+### ShiftRows()
+
+### MixColumns()
+
+### AddRoundKey()
+
+## KeyExpansion()
+
+RotWord()
+SubWord()
+
+## InvCipher()
+
+InvSubBytes()
+InvShiftRows()
+InvMixColumns()
+AddRoundKey()
+
+### InvShiftRows()
+
+### InvSubBytes()
+
+InvSBox()
+
+### InvMixColumns()
+
+### AddRoundKey()
+
+AddRoundKey() is its own inverse.
+
+## EqInvCipher()
+
+Equivalent Inverse Cipher is apparently more efficient than just Inverse Cipher.
+Idk the difference yet.
+
+KeyExpansionEIC()
+
+# Implementation Considerations
+
+AES supports key size 128, 192, and 256
+NK = 4, 6, 8 respectively
+
+No keying restrictions when the key is generated appropriately.
+
+Future revisions could include more flexibility with the allowed values for key length, block size, and number of rounds.
+
+(Some more stuff, 6.4 and 6.5)
