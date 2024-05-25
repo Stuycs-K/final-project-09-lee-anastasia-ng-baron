@@ -67,7 +67,32 @@ s3,3
 
 Cipher()
 InvCipher()
+
+Round - Sequence of transformation, each round requiring a round key
+Round key - a block represented as four words (16 bytes)
+
 KeyExpansion()
+
+Takes the block cipher as an input and generates the round keys as output.
+
+Input: Array of words, denoted by _key_
+Output: expanded array of words, denoted by _w_, called the _key schedule_
+
+The block ciphers AES-128, AES-192, and AES-256 differ in three respects: 
+
+1) The length of the key
+2) The number of rounds, which determines the size of the required key schedule
+3) The specifcation of the recursion within KeyExpansion()
+
+For each algorithm, the number of rounds is denoted by Nr, and the number of words of the key is denoted by _Nk_.
+
+![Alt text](/images/image.png)
+
+The three inputs to Cipher() are: 
+
+1) the data input in, which is a block represented as a lineararray of 16 bytes
+2) the number of rounds Nr for the instance
+3) the round keys
 
 ## Cipher()
 

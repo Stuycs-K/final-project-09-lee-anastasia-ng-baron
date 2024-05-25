@@ -22,7 +22,11 @@
 - Read and Compiled relevant Background Info on AES
 - Placed Info in HISTORY.md
 
-### date y
+### 5/23/24
 
 - Noted the functions for the algorthm, no details yet
 - Simplified the necessary preliminary understanding (ignoring math) in SIMPLIFIED.md
+
+### 5/24/24
+
+- Notes for overarching idea of Cipher(), InvCipher(), KeyExpansion()
