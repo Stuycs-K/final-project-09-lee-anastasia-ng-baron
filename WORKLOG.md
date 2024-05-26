@@ -14,6 +14,10 @@
 - Attempted to start implementing the evaluation of inverses
 - Read to understand Galois Fields better
 
+### 5/24/24
+
+- Hard coded SBox array to be used in the SubBytes method
+
 
 ## Baron Ng
 
