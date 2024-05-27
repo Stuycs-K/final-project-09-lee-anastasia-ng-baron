@@ -68,7 +68,7 @@ s3,3
 Cipher()
 InvCipher()
 
-Round - Sequence of transformation, each round requiring a round key
+Round - Sequence of transformations, each round requiring a round key
 Round key - a block represented as four words (16 bytes)
 
 KeyExpansion()
@@ -136,13 +136,33 @@ index _r_.
 
 ![Alt text](images/ShiftRows.png)
 
-Moves each byte to the left in the row, cycling the left most byte to the right end of the row.
+![Alt text](images/ShiftRows2.png)
+
+Moves each byte to the left in the row, cycling the left most byte to the right end of the row. A shift of four is the same as no shift.
 
 The first row, r = 0, is unchanged.
 
 ### MixColumns()
 
+MixColumns() multiplies each of the four columns of the state by a fixed matrix.
+
+Fixed Matrix = [a0, a1, a2, a3] = [{02}, {01}, {01}, {03}]. 
+
+![Alt text](images/MixColumns.png)
+
 ### AddRoundKey()
+
+AddRoundKey() is a transformation of the state in which a round key is combined with the state by applying the bitwise XOR operation.
+
+Each round key consists of four words from the key schedule, each of which is combined with a column of the state.
+
+![Alt text](images/AddRoundKey1.png)
+
+_Round_ is a value in the range 0 ≤ _round_ ≤ _Nr_, and _w[i]_ is the array of key schedule words.
+
+In Cipher(), AddRoundKey() is invoked Nr + 1 times; Once before the first use of round, and once within each of the _Nr_ rounds, when 1 ≤ round ≤ Nr.
+
+![Alt text](images/AddRoundKey2.png)
 
 ## KeyExpansion()
 
