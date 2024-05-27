@@ -34,3 +34,7 @@
 ### 5/24/24
 
 - Notes for overarching idea of Cipher(), InvCipher(), KeyExpansion()
+
+### 5/26/24
+
+- Wrote notes for all non-inverse functions except xTimes

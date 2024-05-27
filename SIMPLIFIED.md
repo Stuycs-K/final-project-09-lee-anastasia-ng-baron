@@ -178,6 +178,8 @@ For AES-128, a distinct round constant is called in the generation of each of th
 
 ![Alt text](images/KeyExpansion2.png)
 
+NOTE: xTimes has something to do with Galois Field multiplication
+
 Two Transformations on Words are called:
 
 - RotWord()
