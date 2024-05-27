@@ -129,7 +129,16 @@ Basically SBox transforms each byte individually.
 
 ### ShiftRows()
 
+ShiftRows() is a transformation of the state in which the bytes in the last three rows of the state are cyclically shifted. 
 
+The number of positions by which the bytes are shifted depends on the row
+index _r_.
+
+![Alt text](images/ShiftRows.png)
+
+Moves each byte to the left in the row, cycling the left most byte to the right end of the row.
+
+The first row, r = 0, is unchanged.
 
 ### MixColumns()
 
