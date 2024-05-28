@@ -34,8 +34,10 @@ public class encrypt {
     }
     public static void main(String[] args) {
         byte b = (byte)0b01101011;
-        System.out.println((int)b);
+        byte[] input = {(byte)0b10101010, (byte)0b11111100, (byte)0b01010011, (byte)0b11001010, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
+        makeState(input);
+        //System.out.println((int)b);
         SubBytes();
-
+        System.out.println(state);
     }
 }
