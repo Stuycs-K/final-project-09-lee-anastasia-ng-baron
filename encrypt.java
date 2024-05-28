@@ -26,7 +26,7 @@ public class encrypt {
         for (int c = 0; c < 4; c++) {
             for (int r = 0; r < 4; r++) {
                 byte b = state.get(c)[r];
-                state.get(c)[r] = (byte)sbox[(int)b];
+                state.get(c)[r] = (byte)sbox[b & 0xff];
             }
         }
         //System.out.println((byte)sbox[5]);
