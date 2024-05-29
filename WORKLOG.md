@@ -18,6 +18,11 @@
 
 - Hard coded SBox array to be used in the SubBytes method
 
+### 5/28/24
+
+- Completed and tested SubBytes method
+- Wrote preliminary version of MixColumns method
+
 
 ## Baron Ng
 
