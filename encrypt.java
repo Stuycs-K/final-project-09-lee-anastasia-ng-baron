@@ -84,15 +84,12 @@ public class encrypt {
     // The Fixed Matrix = [a0, a1, a2, a3] = [{02}, {01}, {01}, {03}]. 
     public static Matrix MixColumns(Matrix state) {
         Matrix c = new Matrix();
-        c.addColumn((byte)0x02, (byte)0x01, (byte)0x01, (byte)0x03);
+        c.addColumn((byte)02, (byte)01, (byte)01, (byte)03);
         c.addColumn((byte)03, (byte)02, (byte)01, (byte)01);
         c.addColumn((byte)01, (byte)03, (byte)02, (byte)01);
         c.addColumn((byte)01, (byte)01, (byte)03, (byte)02);
         state.mult(c);
-        //this version is not correct yet; mult needs to be modified
-        //to perform xor instead of addition
-
-        return new Matrix();
+        return state;
     }
 
     public static void main(String[] args) {
@@ -103,9 +100,12 @@ public class encrypt {
         //SubBytes(state);
         //System.out.println(state);
 
-        byte[] input2 = {(byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)3, (byte)3, (byte)3, (byte)3, (byte)4, (byte)4, (byte)4, (byte)4};
-        Matrix state2 = makeState(input2);
-        state2 = ShiftRows(state2, 3);
-        System.out.println(state2);
+        state = MixColumns(state);
+        System.out.println(state);
+
+        // byte[] input2 = {(byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)3, (byte)3, (byte)3, (byte)3, (byte)4, (byte)4, (byte)4, (byte)4};
+        // Matrix state2 = makeState(input2);
+        // state2 = ShiftRows(state2, 3);
+        // System.out.println(state2);
     }
 }
