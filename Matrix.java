@@ -29,10 +29,10 @@ public class Matrix {
         tmp[r] = point[r];
 
       for (int r=0; r < point.length; r++) {
-        m.get(c)[r] = (byte)(a.m.get(0)[r] * tmp[0] +
-          a.m.get(1)[r] * tmp[1] +
-          a.m.get(2)[r] * tmp[2] +
-          a.m.get(3)[r] * tmp[3]);
+        m.get(c)[r] = (byte)((a.m.get(0)[r] * tmp[0]) ^
+          (a.m.get(1)[r] * tmp[1]) ^
+          (a.m.get(2)[r] * tmp[2]) ^
+          (a.m.get(3)[r] * tmp[3]));
       }
     }
   }//mult
