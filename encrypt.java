@@ -1,10 +1,11 @@
 public class encrypt {
     static Matrix state = new Matrix();
-    public static void makeState(byte[] input) { //
+    public static void makeState(byte[] input) { //Takes 16 bytes and creates a 4x4 matrix
         for (int i = 0; i < 4; i++) {
             state.addColumn(input[4*i], input[4*i+1], input[4*i+2], input[4*i+3]);
         }
     }
+
     public static int[] sbox = {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
                                 0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
                                 0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15,
@@ -21,6 +22,9 @@ public class encrypt {
                                 0x70, 0x3e, 0xb5, 0x66, 0x48, 0x03, 0xf6, 0x0e, 0x61, 0x35, 0x57, 0xb9, 0x86, 0xc1, 0x1d, 0x9e,
                                 0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
                                 0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16};
+    
+    // Takes the State as input, Outputs the modified state
+    // For each byte, sbox is applied
     public static void SubBytes() {
         for (int c = 0; c < 4; c++) {
             for (int r = 0; r < 4; r++) {
@@ -32,6 +36,34 @@ public class encrypt {
         //System.out.println(sbox.length);
     }
 
+    // ShiftRows() is a transformation of the state in which 
+    // the bytes in the last three rows of the state are cyclically shifted. 
+    //
+    // The number of positions by which the bytes are shifted depends on the row index _r_.
+    public static Matrix ShiftRows(Matrix m, int r){
+        r = r % 4;
+        if (r > 0){
+
+            byte [] c1 = m.get(0);
+            byte [] c2 = m.get(1);
+            byte [] c3 = m.get(2);
+            byte [] c4 = m.get(3);
+            byte [][] last_three_rows = {{c1[1], c1[2], c1[3]},{c2[1], c2[2], c2[3]},{c3[1], c3[2], c3[3]},{c4[1], c4[2], c4[3]}};
+            
+            Matrix modified_state = new Matrix();
+
+            modified_state.addColumn(c1[0]);
+            modified_state.addColumn(c2[0]);
+            modified_state.addColumn(c3[0]);
+            modified_state.addColumn(c4[0]);
+
+            return modified_state;
+        }
+        return m;
+    }
+
+    // MixColumns() multiplies each of the four columns of the state by a fixed matrix.
+    // The Fixed Matrix = [a0, a1, a2, a3] = [{02}, {01}, {01}, {03}]. 
     public static void MixColumns() {
         Matrix c = new Matrix();
         c.addColumn((byte)0x02, (byte)0x01, (byte)0x01, (byte)0x03);
@@ -42,6 +74,7 @@ public class encrypt {
         //this version is not correct yet; mult needs to be modified
         //to perform xor instead of addition
     }
+
     public static void main(String[] args) {
         byte b = (byte)0b01101011;
         byte[] input = {(byte)0b10101010, (byte)0b11111100, (byte)0b01010011, (byte)0b11001010, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
