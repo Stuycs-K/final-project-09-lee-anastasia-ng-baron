@@ -83,7 +83,6 @@ public class encrypt {
     // MixColumns() multiplies each of the four columns of the state by a fixed matrix.
     // The Fixed Matrix = [a0, a1, a2, a3] = [{02}, {01}, {01}, {03}]. 
     public static Matrix MixColumns(Matrix state) {
-        Matrix c = new Matrix();
         c.addColumn((byte)02, (byte)01, (byte)01, (byte)03);
         c.addColumn((byte)03, (byte)02, (byte)01, (byte)01);
         c.addColumn((byte)01, (byte)03, (byte)02, (byte)01);
@@ -95,9 +94,13 @@ public class encrypt {
     public static byte xTimes(byte b) {
         byte prod = (byte)(b << 1);
         if (b >> 7 == 1) {
-            prod = prod ^ (byte)0x1b;
+            prod = (byte)(prod ^ 0x1b);
         }
         return prod;
+    }
+
+    public static byte Times3(byte b) {
+        return (byte)(xTimes(b) ^ xTimes(xTimes(b)));
     }
 
     public static void main(String[] args) {
