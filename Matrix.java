@@ -29,10 +29,10 @@ public class Matrix {
         tmp[r] = point[r];
 
       for (int r=0; r < point.length; r++) {
-        m.get(c)[r] = (byte)((a.m.get(0)[r] * tmp[0]) ^
+        m.get(c)[r] = (byte)(((a.m.get(0)[r] * tmp[0]) ^
           (a.m.get(1)[r] * tmp[1]) ^
           (a.m.get(2)[r] * tmp[2]) ^
-          (a.m.get(3)[r] * tmp[3]));
+          (a.m.get(3)[r] * tmp[3])) & 0xff);
       }
     }
   }//mult
@@ -61,7 +61,8 @@ public class Matrix {
 
     for (int i=0; i<4; i++) {
       for (byte[] p : m) {
-        s+= p[i] + " ";
+        String s1 = String.format("%8s", Integer.toBinaryString(p[i] & 0xff)).replace(' ', '0');
+        s+= s1 + " ";
       }
       s+= "\n";
     }

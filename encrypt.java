@@ -97,11 +97,11 @@ public class encrypt {
         byte[] input = {(byte)0b10101010, (byte)0b11111100, (byte)0b01010011, (byte)0b11001010, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
         Matrix state = makeState(input);
         //System.out.println((int)b);
-        //SubBytes(state);
-        //System.out.println(state);
-
-        state = MixColumns(state);
+        SubBytes(state);
         System.out.println(state);
+
+        // state = MixColumns(state);
+        // System.out.println(state);
 
         // byte[] input2 = {(byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)3, (byte)3, (byte)3, (byte)3, (byte)4, (byte)4, (byte)4, (byte)4};
         // Matrix state2 = makeState(input2);
