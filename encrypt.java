@@ -31,6 +31,14 @@ public class encrypt {
         //System.out.println((byte)sbox[5]);
         //System.out.println(sbox.length);
     }
+
+    public static void MixColumns() {
+        Matrix c = new Matrix();
+        c.addColumn((byte)0x02, (byte)0x01, (byte)0x01, (byte)0x03);
+        c.addColumn((byte)03, (byte)02, (byte)01, (byte)01);
+        c.addColumn((byte)01, (byte)03, (byte)02, (byte)01);
+        c.addColumn((byte)01, (byte)01, (byte)03, (byte)02);
+    }
     public static void main(String[] args) {
         byte b = (byte)0b01101011;
         byte[] input = {(byte)0b10101010, (byte)0b11111100, (byte)0b01010011, (byte)0b11001010, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
