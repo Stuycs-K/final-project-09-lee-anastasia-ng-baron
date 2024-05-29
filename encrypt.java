@@ -83,7 +83,6 @@ public class encrypt {
     // MixColumns() multiplies each of the four columns of the state by a fixed matrix.
     // The Fixed Matrix = [a0, a1, a2, a3] = [{02}, {01}, {01}, {03}]. 
     public static Matrix MixColumns(Matrix state) {
-        Matrix c = new Matrix();
         c.addColumn((byte)02, (byte)01, (byte)01, (byte)03);
         c.addColumn((byte)03, (byte)02, (byte)01, (byte)01);
         c.addColumn((byte)01, (byte)03, (byte)02, (byte)01);
@@ -95,12 +94,16 @@ public class encrypt {
     public static byte xTimes(byte b) {
         byte prod = (byte)(b << 1);
         if (b >> 7 == 1) {
-            prod = prod ^ (byte)0x1b;
+            prod = (byte)(prod ^ 0x1b);
         }
         return prod;
     }
 
-        // roundkey is comprised of four words from the key schedule
+    public static byte Times3(byte b) {
+        return (byte)(xTimes(b) ^ xTimes(xTimes(b)));
+    }
+
+    // roundkey is comprised of four words from the key schedule
     // KeyExpansion() is responsible for generating the roundkey to be used
     // Each column of the state is XOR'ed with each column in the roundKey
     public static Matrix AddRoundKey(Matrix state, Matrix roundKey){
