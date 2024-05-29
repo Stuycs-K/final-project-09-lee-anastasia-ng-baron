@@ -100,6 +100,34 @@ public class encrypt {
         return prod;
     }
 
+        // roundkey is comprised of four words from the key schedule
+    // KeyExpansion() is responsible for generating the roundkey to be used
+    // Each column of the state is XOR'ed with each column in the roundKey
+    public static Matrix AddRoundKey(Matrix state, Matrix roundKey){
+
+
+        return new Matrix();
+    }
+
+    // Generates 4*(Nr + 1) words, four for each operation of AddRoundKey, which runs (Nr + 1) times
+    // KeyExpansion() has 10 fixed words called round constants
+    // For AES 256, only the first 7 round constants are used
+    public static Matrix KeyExpansion(){
+
+
+        return new Matrix();
+    }
+    
+    // Used by KeyExpansion()
+    public static byte[] RotWord(byte [] word){
+        byte [] modified_word = {word[1], word[2], word[3], word[0]};
+        return modified_word;
+    }
+    // Used by KeyExpansion()
+    public static byte[] SubWord(byte [] b){
+        return new byte[]{(byte)sbox[b[0] & 0xff], (byte)sbox[b[1] & 0xff], (byte)sbox[b[2] & 0xff], (byte)sbox[b[3] & 0xff]};
+    }
+
     public static void main(String[] args) {
         byte b = (byte)0b01101011;
         byte[] input = {(byte)0b10101010, (byte)0b11111100, (byte)0b01010011, (byte)0b11001010, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
