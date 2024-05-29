@@ -48,14 +48,28 @@ public class encrypt {
             byte [] c2 = m.get(1);
             byte [] c3 = m.get(2);
             byte [] c4 = m.get(3);
-            byte [][] last_three_rows = {{c1[1], c1[2], c1[3]},{c2[1], c2[2], c2[3]},{c3[1], c3[2], c3[3]},{c4[1], c4[2], c4[3]}};
+            byte [][] rows = {{c1[1], c1[2], c1[3]},{c2[1], c2[2], c2[3]},{c3[1], c3[2], c3[3]},{c4[1], c4[2], c4[3]}}; // the last 3 rows
             
             Matrix modified_state = new Matrix();
 
-            modified_state.addColumn(c1[0]);
-            modified_state.addColumn(c2[0]);
-            modified_state.addColumn(c3[0]);
-            modified_state.addColumn(c4[0]);
+            if (r == 1){
+                modified_state.addColumn(c1[0], rows[1][0], rows[1][1], rows[1][2]);
+                modified_state.addColumn(c2[0], rows[2][0], rows[2][1], rows[2][2]);
+                modified_state.addColumn(c3[0], rows[3][0], rows[3][1], rows[3][2]);
+                modified_state.addColumn(c4[0], rows[0][0], rows[0][1], rows[0][2]);
+            } else if (r == 2){
+                modified_state.addColumn(c1[0], rows[2][0], rows[2][1], rows[2][2]);
+                modified_state.addColumn(c2[0], rows[3][0], rows[3][1], rows[3][2]);
+                modified_state.addColumn(c3[0], rows[0][0], rows[0][1], rows[0][2]);
+                modified_state.addColumn(c4[0], rows[1][0], rows[1][1], rows[1][2]);
+            } else if (r == 3){
+                modified_state.addColumn(c1[0], rows[3][0], rows[3][1], rows[3][2]);
+                modified_state.addColumn(c2[0], rows[0][0], rows[0][1], rows[0][2]);
+                modified_state.addColumn(c3[0], rows[1][0], rows[1][1], rows[1][2]);
+                modified_state.addColumn(c4[0], rows[2][0], rows[2][1], rows[2][2]);
+            }else {
+                System.out.println ("Shift rows acting sus");
+            }
 
             return modified_state;
         }
