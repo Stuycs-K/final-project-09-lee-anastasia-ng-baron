@@ -38,6 +38,9 @@ public class encrypt {
         c.addColumn((byte)03, (byte)02, (byte)01, (byte)01);
         c.addColumn((byte)01, (byte)03, (byte)02, (byte)01);
         c.addColumn((byte)01, (byte)01, (byte)03, (byte)02);
+        state.mult(c);
+        //this version is not correct yet; mult needs to be modified
+        //to perform xor instead of addition
     }
     public static void main(String[] args) {
         byte b = (byte)0b01101011;
