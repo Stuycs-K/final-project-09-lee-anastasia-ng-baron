@@ -1,9 +1,11 @@
 public class encrypt {
-    static Matrix state = new Matrix();
-    public static void makeState(byte[] input) { //Takes 16 bytes and creates a 4x4 matrix
+
+    public static Matrix makeState(byte[] input) { //Takes 16 bytes and creates a 4x4 matrix
+        Matrix state = new Matrix();
         for (int i = 0; i < 4; i++) {
             state.addColumn(input[4*i], input[4*i+1], input[4*i+2], input[4*i+3]);
         }
+        return state;
     }
 
     public static int[] sbox = {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
@@ -25,13 +27,15 @@ public class encrypt {
     
     // Takes the State as input, Outputs the modified state
     // For each byte, sbox is applied
-    public static void SubBytes() {
+    public static Matrix SubBytes(Matrix state) {
         for (int c = 0; c < 4; c++) {
             for (int r = 0; r < 4; r++) {
                 byte b = state.get(c)[r];
                 state.get(c)[r] = (byte)sbox[b & 0xff];
             }
         }
+
+        return state;
         //System.out.println((byte)sbox[5]);
         //System.out.println(sbox.length);
     }
@@ -78,7 +82,7 @@ public class encrypt {
 
     // MixColumns() multiplies each of the four columns of the state by a fixed matrix.
     // The Fixed Matrix = [a0, a1, a2, a3] = [{02}, {01}, {01}, {03}]. 
-    public static void MixColumns() {
+    public static Matrix MixColumns(Matrix state) {
         Matrix c = new Matrix();
         c.addColumn((byte)0x02, (byte)0x01, (byte)0x01, (byte)0x03);
         c.addColumn((byte)03, (byte)02, (byte)01, (byte)01);
@@ -87,14 +91,21 @@ public class encrypt {
         state.mult(c);
         //this version is not correct yet; mult needs to be modified
         //to perform xor instead of addition
+
+        return new Matrix();
     }
 
     public static void main(String[] args) {
         byte b = (byte)0b01101011;
         byte[] input = {(byte)0b10101010, (byte)0b11111100, (byte)0b01010011, (byte)0b11001010, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
-        makeState(input);
+        Matrix state = makeState(input);
         //System.out.println((int)b);
-        SubBytes();
-        System.out.println(state);
+        //SubBytes(state);
+        //System.out.println(state);
+
+        byte[] input2 = {(byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)3, (byte)3, (byte)3, (byte)3, (byte)4, (byte)4, (byte)4, (byte)4};
+        Matrix state2 = makeState(input2);
+        state2 = ShiftRows(state2, 3);
+        System.out.println(state2);
     }
 }

@@ -43,3 +43,8 @@
 ### 5/26/24
 
 - Wrote notes for all non-inverse functions except xTimes
+
+### 5/28/24
+
+- Wrote documentation for existing functions
+- Finished ShiftRows()
