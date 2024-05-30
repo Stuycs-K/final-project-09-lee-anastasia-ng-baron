@@ -111,10 +111,17 @@ public class encrypt {
     // roundkey is comprised of four words from the key schedule
     // KeyExpansion() is responsible for generating the roundkey to be used
     // Each column of the state is XOR'ed with each column in the roundKey
-    public static Matrix AddRoundKey(Matrix state, Matrix roundKey){
+    // w is the round key, given by KeyExpansion
+    public static Matrix AddRoundKey(Matrix state, Matrix roundKey, byte[] w, int round){
+        Matrix modified = new Matrix();
+        for (int c = 0; c < 4; c++) {
+            byte[] before = state.m.get(c);
+            int index = 4*round + c;
+            byte[] after = new byte[4];
+            modified.addColumn(after[0], after[1], after[2], after[3]);
+        }
 
-
-        return new Matrix();
+        return modified;
     }
 
     // Generates 4*(Nr + 1) words, four for each operation of AddRoundKey, which runs (Nr + 1) times
