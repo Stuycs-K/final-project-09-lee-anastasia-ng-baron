@@ -111,6 +111,9 @@ public class encrypt {
     // roundkey is comprised of four words from the key schedule
     // KeyExpansion() is responsible for generating the roundkey to be used
     // Each column of the state is XOR'ed with each column in the roundKey
+    // variables:
+    // round = index for interating through rounds; 0 ≤ round ≤ Nr
+    // w[i] = key schedule ; created by KeyExpansion()
     public static Matrix AddRoundKey(Matrix state, Matrix roundKey){
 
 
@@ -124,10 +127,10 @@ public class encrypt {
     // variables:
     // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
     // j = index for the Rconstants ; 1 ≤ j ≤ 10
-    public static byte[][] KeyExpansion(){
+    public static byte[][] KeyExpansion(key){
         int Nr = 14; // Nr is 14 for AES 256
         int Nk = 8; // Nk is 8 for AES 256
-        byte [][] w = new byte[4][4 * (Nr + 1)]; // The output array of words
+        byte [][] w = new byte[4][4 * (Nr + 1)]; // The output array of words; key schedule
         byte [][] Rcon = {{0x01, 0x00, 0x00, 0x00},
                         {0x02, 0x00, 0x00, 0x00},
                         {0x04, 0x00, 0x00, 0x00},
@@ -141,9 +144,9 @@ public class encrypt {
 
 
         for (int i = 1; i <= Nr + 1; i++){
-            if (i % Nk == 0){
-                w[i] =XOR (XOR(w[i - Nk], SubWord(RotWord(w[i - 1]))), Rcon[i / Nk]);
-            } else if ((i + 4) % 8 == 0){
+            if (i % Nk == 0 && i != 0){ // 
+                w[i] = XOR (XOR(w[i - Nk], SubWord(RotWord(w[i - 1]))), Rcon[i / Nk]);
+            } else if ((i + 4) % Nk == 0){
                 w[i] = XOR(w[i - Nk], SubWord(w[i - 1]));
             } else {
                 w[i] = XOR(w[i - Nk], w[i - 1]);
