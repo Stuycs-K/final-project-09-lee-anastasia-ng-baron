@@ -172,7 +172,7 @@ public class encrypt {
     public static byte[] XOR (byte [] word1, byte[] word2){
         byte [] b = new byte[4];
         for (int i = 0; i < word1.length; i++){
-            b[i] = word1[i] ^ word2[i];
+            b[i] = (byte)(word1[i] ^ word2[i]);
         }
         return b;
     }
