@@ -114,10 +114,20 @@ public class encrypt {
     // variables:
     // round = index for interating through rounds; 0 ≤ round ≤ Nr
     // w[i] = key schedule ; created by KeyExpansion()
-    public static Matrix AddRoundKey(Matrix state, Matrix roundKey){
+    public static Matrix AddRoundKey(Matrix state, Matrix roundKey, byte[] w, int round){
+        Matrix modified = new Matrix();
+        for (int c = 0; c < 4; c++) {
+            byte[] before = state.m.get(c);
+            int index = 4*round + c;
+            byte word = w[index];
+            byte[] after = new byte[4];
+            for (int r = 0; r < 4; r++) {
+                after[r] = (byte)(before[r] ^ word);
+            }
+            modified.addColumn(after[0], after[1], after[2], after[3]);
+        }
 
-
-        return new Matrix();
+        return modified;
     }
 
     // Generates 4*(Nr + 1) words, four for each operation of AddRoundKey, which runs (Nr + 1) times
@@ -168,7 +178,7 @@ public class encrypt {
     public static byte[] XOR (byte [] word1, byte[] word2){
         byte [] b = new byte[4];
         for (int i = 0; i < word1.length; i++){
-            b[i] = word1[i] ^ word2[i];
+            b[i] = (byte)(word1[i] ^ word2[i]);
         }
         return b;
     }
