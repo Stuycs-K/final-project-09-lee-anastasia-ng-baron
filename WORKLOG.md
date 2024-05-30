@@ -23,6 +23,11 @@
 - Completed and tested SubBytes method
 - Wrote preliminary version of MixColumns method
 
+### 5/29/24
+- Adjusted Matrix toString method so that output is easier to read
+- Wrote xTimes and Times3 methods for multiplication in GF(2^8)
+- Changed and completed MixColumns method
+
 
 ## Baron Ng
 
