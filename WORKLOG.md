@@ -53,3 +53,8 @@
 
 - Wrote documentation for existing functions
 - Finished ShiftRows()
+
+### 5/29/24
+
+- Wrote RotWord() and SubWord()
+- Set up KeyExpansion()

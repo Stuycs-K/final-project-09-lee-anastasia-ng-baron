@@ -120,9 +120,28 @@ public class encrypt {
     // Generates 4*(Nr + 1) words, four for each operation of AddRoundKey, which runs (Nr + 1) times
     // KeyExpansion() has 10 fixed words called round constants
     // For AES 256, only the first 7 round constants are used
+    // Nr means 'number of rounds'
+    // variables:
+    // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
+    // j = index for the Rconstants ; 1 ≤ j ≤ 10
     public static Matrix KeyExpansion(){
+        int Nr = 14; // Nr is 14 for AES 256
+        byte [][] w = new byte[4][4 * (Nr + 1)]; // An array of words
+        byte [][] Rcon = {{0x01, 0x00, 0x00, 0x00},
+                        {0x02, 0x00, 0x00, 0x00},
+                        {0x04, 0x00, 0x00, 0x00},
+                        {0x08, 0x00, 0x00, 0x00},
+                        {0x10, 0x00, 0x00, 0x00},
+                        {0x20, 0x00, 0x00, 0x00},
+                        {0x40, 0x00, 0x00, 0x00},
+                        {(byte)0x80, 0x00, 0x00, 0x00},
+                        {0x1b, 0x00, 0x00, 0x00},
+                        {0x36, 0x00, 0x00, 0x00}};
 
 
+        for (int i = 1; i <= 14 + 1; i++){
+
+        }
         return new Matrix();
     }
     
