@@ -127,13 +127,14 @@ public class encrypt {
     // Generates 4*(Nr + 1) words, four for each operation of AddRoundKey, which runs (Nr + 1) times
     // KeyExpansion() has 10 fixed words called round constants
     // For AES 256, only the first 7 round constants are used
-    // Nr means 'number of rounds'
+    // Nr means 'number of rounds'; Nk means "key length"
     // variables:
     // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
     // j = index for the Rconstants ; 1 ≤ j ≤ 10
-    public static Matrix KeyExpansion(){
+    public static byte[][] KeyExpansion(){
         int Nr = 14; // Nr is 14 for AES 256
-        byte [][] w = new byte[4][4 * (Nr + 1)]; // An array of words
+        int Nk = 8; // Nk is 8 for AES 256
+        byte [][] w = new byte[4][4 * (Nr + 1)]; // The output array of words
         byte [][] Rcon = {{0x01, 0x00, 0x00, 0x00},
                         {0x02, 0x00, 0x00, 0x00},
                         {0x04, 0x00, 0x00, 0x00},
@@ -146,10 +147,16 @@ public class encrypt {
                         {0x36, 0x00, 0x00, 0x00}};
 
 
-        for (int i = 1; i <= 14 + 1; i++){
-
+        for (int i = 1; i <= Nr + 1; i++){
+            if (i % Nk == 0){
+                w[i] =XOR (XOR(w[i - Nk], SubWord(RotWord(w[i - 1]))), Rcon[i / Nk]);
+            } else if ((i + 4) % 8 == 0){
+                w[i] = XOR(w[i - Nk], SubWord(w[i - 1]));
+            } else {
+                w[i] = XOR(w[i - Nk], w[i - 1]);
+            }
         }
-        return new Matrix();
+        return w;
     }
     
     // Used by KeyExpansion()
@@ -160,6 +167,14 @@ public class encrypt {
     // Used by KeyExpansion()
     public static byte[] SubWord(byte [] b){
         return new byte[]{(byte)sbox[b[0] & 0xff], (byte)sbox[b[1] & 0xff], (byte)sbox[b[2] & 0xff], (byte)sbox[b[3] & 0xff]};
+    }
+
+    public static byte[] XOR (byte [] word1, byte[] word2){
+        byte [] b = new byte[4];
+        for (int i = 0; i < word1.length; i++){
+            b[i] = word1[i] ^ word2[i];
+        }
+        return b;
     }
 
     public static void main(String[] args) {
