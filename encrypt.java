@@ -83,6 +83,16 @@ public class encrypt {
     // MixColumns() multiplies each of the four columns of the state by a fixed matrix.
     // The Fixed Matrix = [a0, a1, a2, a3] = [{02}, {01}, {01}, {03}]. 
     public static Matrix MixColumns(Matrix state) {
+        Matrix a = new Matrix();
+        for (int c = 0; c < 4; c++) {
+            byte[] given = state.m.get(c);
+            byte[] column = new byte[4];
+            column[0] = (byte)(xTimes(given[0]) ^ Times3(given[1]) ^ given[2] ^ given[3]);
+            column[1] = (byte)(given[0] ^ xTimes(given[1]) ^ Times3(given[2]) ^ given[3]);
+            column[2] = (byte)(given[0] ^ given[1] ^ xTimes(given[2]) ^ Times3(given[3]));
+            column[3] = (byte)(Times3(given[0]) ^ given[1] ^ given[2] ^ xTimes(given[3]));
+
+        }
         c.addColumn((byte)02, (byte)01, (byte)01, (byte)03);
         c.addColumn((byte)03, (byte)02, (byte)01, (byte)01);
         c.addColumn((byte)01, (byte)03, (byte)02, (byte)01);
