@@ -13,12 +13,15 @@ public class encrypt {
                                     {0x1b, 0x00, 0x00, 0x00},
                                     {0x36, 0x00, 0x00, 0x00}};
 
+    private int round = 0; // used by Cipher() and AddRoundKey(); must be non-static to be edited from within methods (I think)
                                     
     public static Matrix makeState(byte[] input) { //Takes 16 bytes and creates a 4x4 matrix
+
         Matrix state = new Matrix();
         for (int i = 0; i < 4; i++) {
             state.addColumn(input[4*i], input[4*i+1], input[4*i+2], input[4*i+3]);
         }
+        
         return state;
     }
 
@@ -42,6 +45,7 @@ public class encrypt {
     // Takes the State as input, Outputs the modified state
     // For each byte, sbox is applied
     public static Matrix SubBytes(Matrix state) {
+
         for (int c = 0; c < 4; c++) {
             for (int r = 0; r < 4; r++) {
                 byte b = state.get(c)[r];
@@ -67,6 +71,7 @@ public class encrypt {
         byte [][] state = {c1, c2, c3, c4};
         
         Matrix modified_state = new Matrix();
+
         for (int col = 0; col < 4; col++){
             byte a = state[col][0];
             byte b = state[1][col + 1 % 4]; // row 2
@@ -74,13 +79,16 @@ public class encrypt {
             byte d = state[3][col + 3 % 4]; // row 4
             modified_state.addColumn(a,b,c,d);
         }
+
         return modified_state;
     }
 
     // MixColumns() multiplies each of the four columns of the state by a fixed matrix.
     // The Fixed Matrix = [a0, a1, a2, a3] = [{02}, {01}, {01}, {03}]. 
     public static Matrix MixColumns(Matrix state) {
+
         Matrix a = new Matrix();
+
         for (int c = 0; c < 4; c++) {
             byte[] given = state.m.get(c);
             byte[] col = new byte[4];
@@ -90,6 +98,7 @@ public class encrypt {
             col[3] = (byte)(Times3(given[0]) ^ given[1] ^ given[2] ^ xTimes(given[3]));
             a.addColumn(col[0], col[1], col[2], col[3]);
         }
+
         return a;
     }
 
@@ -111,7 +120,8 @@ public class encrypt {
     // variables:
     // round = index for obtaining round key words; 0 ≤ round ≤ Nr; obtained from within Cipher()
     // w = key schedule; created by KeyExpansion()
-    public static Matrix AddRoundKey(Matrix state, byte[][] w){
+    public Matrix AddRoundKey(Matrix state, byte[][] w){
+
         Matrix modified = new Matrix();
 
         for (int c = 0; c < 4; c++) {
@@ -167,6 +177,7 @@ public class encrypt {
     // Used by KeyExpansion()
     // word ^ word, aka four bytes ^ fours bytes shortcut
     public static byte[] XOR (byte [] word1, byte[] word2){
+
         byte [] b = new byte[4];
         for (int i = 0; i < word1.length; i++){
             b[i] = (byte)(word1[i] ^ word2[i]);
@@ -177,7 +188,8 @@ public class encrypt {
     // - KeyExpansion is called outside of Cipher()
     // - Nr is set outside of Cipher()
     // - in is 256 bits, or 16 bytes worth of data in array form
-    public static Matrix Cipher(byte [] in, int Nr, byte[][] w){
+    public Matrix Cipher(byte [] in, int Nr, byte[][] w){
+
         Matrix state = makeState(in);
 
         // state ← round key addition
@@ -195,11 +207,10 @@ public class encrypt {
     }
 
     // The Wrapper function for everything
-    public static Matrix AES256 (byte[] input, byte[] key){
-        
-        byte [][] expanded_key = KeyExpansion(key);
-        Cipher(input, Nr, expanded_key);
+    public Matrix AES256 (byte[] input, byte[] key){
 
+        byte [][] expanded_key = KeyExpansion(key);
+        return Cipher(input, Nr, expanded_key);
     }
 
     public static void main(String[] args) {
@@ -213,12 +224,12 @@ public class encrypt {
         state = MixColumns(state);
         System.out.println(state);
 
-        // byte[] input2 = {(byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)3, (byte)3, (byte)3, (byte)3, (byte)4, (byte)4, (byte)4, (byte)4};
-        // Matrix state2 = makeState(input2);
+        byte[] input2 = {(byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)3, (byte)3, (byte)3, (byte)3, (byte)4, (byte)4, (byte)4, (byte)4};
+        byte [] key = {(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0};
         // state2 = ShiftRows(state2, 3);
         // System.out.println(state2);
-
-        byte [] key =
-        AES256(input, key);
+        
+        // Matrix out = AES256(input3, key);
+        // System.out.println(out);
     }
 }
