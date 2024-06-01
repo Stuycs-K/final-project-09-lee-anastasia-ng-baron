@@ -148,9 +148,9 @@ public class encrypt {
     // variables:
     // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
     // j = index for the Rconstants ; 1 ≤ j ≤ 10
-    public static byte[][] KeyExpansion(byte[] key){ // key is 16 bytes
+    public static byte[][] KeyExpansion(byte[] key){ // key is 32 bytes
         
-        byte [][] w = new byte[4][4 * (Nr + 1)]; // The output array of words; key schedule
+        byte [][] w = new byte[4 * (Nr + 1)][4]; // The output array of words; key schedule
 
         for (int i = 0; i <= Nk - 1; i++){// iterates through the 8 words in the key
             w[i] = new byte []{key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3]};
@@ -165,7 +165,7 @@ public class encrypt {
                 w[i] = XOR(w[i - Nk], w[i - 1]);
             }
         }
-        return w; // if I am understanding this correctly, this should be Nk x 4 
+        return w; // if I am understanding this correctly, this should be be 60 x 4, enough for (Nr + 1) round keys!
     }
     
     // Used by KeyExpansion()
@@ -229,7 +229,7 @@ public class encrypt {
         System.out.println(state);
 
         byte[] input2 = {(byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)3, (byte)3, (byte)3, (byte)3, (byte)4, (byte)4, (byte)4, (byte)4};
-        byte [] key = {(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0};
+        byte [] key = {(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0};
         // state2 = ShiftRows(state2, 3);
         // System.out.println(state2);
         

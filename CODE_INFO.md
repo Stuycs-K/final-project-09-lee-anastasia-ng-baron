@@ -21,3 +21,19 @@ AES256()
 
 Word - four bytes, aka a row or a column
 Block - four words, aka the 4x4 matrix
+
+KeyExpansion - Takes 32 byte array key and converts it to 60 words array key schedule to be used to make round keys, which are 4 words each, so 15 round key in total; happens prior to Cipher()
+
+Cipher - takes the input, Nr, and the 60 words array key schedule from KeyExpansion
+Encryption process
+- Takes the original input 16 bytes and applies 4 words (the 1st round key) from the key schedule (lines 2 and 3)(AddRoundKey applies the roundkey to state)
+- Then loops through next 13 round keys (for round from 1 to Nr − 1): applying the subBytes, ShiftRows, and MixColumns transformation, then it applies the next round key to the transformed state before looping again
+- This way every loop runs the encrypted state through the transformations and the next round key to create an even more encrypted state, thus layering on encryption
+- After the loop of layered encryption, subBytes and ShiftRows are applied, and then the LAST round key is applied: AddRoundKey(state, w[4 * Nr...4 * Nr + 3])(The second arg is the last 4 words of the key schedule)
+- return the encrypted state
+
+KEY CONCEPT: LAYERED ENCRYPTION
+
+Instead of -> Input x Key
+AES does this -> (((((((((((((((Input x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key) x Transformations x Round Key)
+
