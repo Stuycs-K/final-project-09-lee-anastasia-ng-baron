@@ -1,7 +1,7 @@
 public class encrypt {
 
-    private static int Nr = 14; // Nr is 14 for AES 256
-    private static int Nk = 8; // Nk is 8 for AES 256
+    private static int Nr = 14; // Nr is 14 for AES 256, number of rounds
+    private static int Nk = 8; // Nk is 8 for AES 256, key length in words
     private static byte [][] Rcon = {{0x01, 0x00, 0x00, 0x00},
                                     {0x02, 0x00, 0x00, 0x00},
                                     {0x04, 0x00, 0x00, 0x00},
@@ -148,9 +148,13 @@ public class encrypt {
     // variables:
     // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
     // j = index for the Rconstants ; 1 ≤ j ≤ 10
-    public static byte[][] KeyExpansion(byte[] key){
+    public static byte[][] KeyExpansion(byte[] key){ // key is 16 bytes
         
         byte [][] w = new byte[4][4 * (Nr + 1)]; // The output array of words; key schedule
+
+        for (int i = 0; i <= Nk - 1; i++){// iterates through the 8 words in the key
+            w[i] = new byte []{key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3]};
+        } // First Nk words of the expanded key, w, are the key itself
 
         for (int i = 1; i <= Nr + 1; i++){
             if (i % Nk == 0 && i != 0){ // 
@@ -161,7 +165,7 @@ public class encrypt {
                 w[i] = XOR(w[i - Nk], w[i - 1]);
             }
         }
-        return w;
+        return w; // if I am understanding this correctly, this should be Nk x 4 
     }
     
     // Used by KeyExpansion()
@@ -193,7 +197,7 @@ public class encrypt {
         Matrix state = makeState(in);
 
         // state ← round key addition
-        for (int round = 1; round <= Nr - 1; round++){ // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
+        for (round = 1; round <= Nr - 1; round++){ // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
             state = SubBytes(state);
             state = ShiftRows(state);
             state = MixColumns(state);
