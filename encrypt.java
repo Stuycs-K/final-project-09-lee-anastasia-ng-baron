@@ -44,40 +44,23 @@ public class encrypt {
     // the bytes in the last three rows of the state are cyclically shifted. 
     //
     // The number of positions by which the bytes are shifted depends on the row index _r_.
-    public static Matrix ShiftRows(Matrix m, int r){
-        r = r % 4;
-        if (r > 0){
+    public static Matrix ShiftRows(Matrix m){
 
-            byte [] c1 = m.get(0);
-            byte [] c2 = m.get(1);
-            byte [] c3 = m.get(2);
-            byte [] c4 = m.get(3);
-            byte [][] rows = {{c1[1], c1[2], c1[3]},{c2[1], c2[2], c2[3]},{c3[1], c3[2], c3[3]},{c4[1], c4[2], c4[3]}}; // the last 3 rows
-            
-            Matrix modified_state = new Matrix();
-
-            if (r == 1){
-                modified_state.addColumn(c1[0], rows[1][0], rows[1][1], rows[1][2]);
-                modified_state.addColumn(c2[0], rows[2][0], rows[2][1], rows[2][2]);
-                modified_state.addColumn(c3[0], rows[3][0], rows[3][1], rows[3][2]);
-                modified_state.addColumn(c4[0], rows[0][0], rows[0][1], rows[0][2]);
-            } else if (r == 2){
-                modified_state.addColumn(c1[0], rows[2][0], rows[2][1], rows[2][2]);
-                modified_state.addColumn(c2[0], rows[3][0], rows[3][1], rows[3][2]);
-                modified_state.addColumn(c3[0], rows[0][0], rows[0][1], rows[0][2]);
-                modified_state.addColumn(c4[0], rows[1][0], rows[1][1], rows[1][2]);
-            } else if (r == 3){
-                modified_state.addColumn(c1[0], rows[3][0], rows[3][1], rows[3][2]);
-                modified_state.addColumn(c2[0], rows[0][0], rows[0][1], rows[0][2]);
-                modified_state.addColumn(c3[0], rows[1][0], rows[1][1], rows[1][2]);
-                modified_state.addColumn(c4[0], rows[2][0], rows[2][1], rows[2][2]);
-            }else {
-                System.out.println ("Shift rows acting sus");
-            }
-
-            return modified_state;
+        byte [] c1 = m.get(0);
+        byte [] c2 = m.get(1);
+        byte [] c3 = m.get(2);
+        byte [] c4 = m.get(3);
+        byte [][] state = {c1, c2, c3, c4};
+        
+        Matrix modified_state = new Matrix();
+        for (int col = 0; col < 4; col++){
+            byte a = state[col][0];
+            byte b = state[1][col + 1 % 4]; // row 2
+            byte c = state[2][col + 2 % 4]; // row 3
+            byte d = state[3][col + 3 % 4]; // row 4
+            modified_state.addColumn(a,b,c,d);
         }
-        return m;
+        return modified_state;
     }
 
     // MixColumns() multiplies each of the four columns of the state by a fixed matrix.
@@ -181,6 +164,23 @@ public class encrypt {
             b[i] = (byte)(word1[i] ^ word2[i]);
         }
         return b;
+    }
+
+    // 
+    public static Matrix Cipher(Matrix in, Nr, w){
+        Matrix state = in.copy();
+        // state ← round key addition
+        for (int round = 1; round <= Nr - 1){
+            state = SubBytes(state);
+            state = ShiftRows(state);
+            state = MixColumns(state);
+            state = AddRoundKey(state, w[4 * round..4 * round + 3]);
+        }
+        state = SubBytes(state);
+        state = ShiftRows(state);
+        // MixColumns() is omitted; idk what that means
+        state = AddRoundKey(state, w[4 * round..4 * round + 3]);
+        return state;
     }
 
     public static void main(String[] args) {
