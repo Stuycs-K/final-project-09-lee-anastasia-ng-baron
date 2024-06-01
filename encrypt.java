@@ -1,5 +1,19 @@
 public class encrypt {
 
+    private static int Nr = 14; // Nr is 14 for AES 256
+    private static int Nk = 8; // Nk is 8 for AES 256
+    private static byte [][] Rcon = {{0x01, 0x00, 0x00, 0x00},
+                                    {0x02, 0x00, 0x00, 0x00},
+                                    {0x04, 0x00, 0x00, 0x00},
+                                    {0x08, 0x00, 0x00, 0x00},
+                                    {0x10, 0x00, 0x00, 0x00},
+                                    {0x20, 0x00, 0x00, 0x00},
+                                    {0x40, 0x00, 0x00, 0x00},
+                                    {(byte)0x80, 0x00, 0x00, 0x00},
+                                    {0x1b, 0x00, 0x00, 0x00},
+                                    {0x36, 0x00, 0x00, 0x00}};
+
+                                    
     public static Matrix makeState(byte[] input) { //Takes 16 bytes and creates a 4x4 matrix
         Matrix state = new Matrix();
         for (int i = 0; i < 4; i++) {
@@ -91,22 +105,25 @@ public class encrypt {
         return (byte)(xTimes(b) ^ xTimes(xTimes(b)));
     }
 
-    // roundkey is comprised of four words from the key schedule
+    // roundkey is comprised of four words from the key schedule, which is basically a list of round key words
     // KeyExpansion() is responsible for generating the roundkey to be used
     // Each column of the state is XOR'ed with each column in the roundKey
     // variables:
-    // round = index for interating through rounds; 0 ≤ round ≤ Nr
-    // w[i] = key schedule ; created by KeyExpansion()
-    public static Matrix AddRoundKey(Matrix state, Matrix roundKey, byte[] w, int round){
+    // round = index for obtaining round key words; 0 ≤ round ≤ Nr; obtained from within Cipher()
+    // w = key schedule; created by KeyExpansion()
+    public static Matrix AddRoundKey(Matrix state, byte[][] w){
         Matrix modified = new Matrix();
+
         for (int c = 0; c < 4; c++) {
+            
             byte[] before = state.m.get(c);
-            int index = 4*round + c;
-            byte word = w[index];
+            int index = 4 * round + c; // round comes from Cipher()
+            byte [] word = w[index];
             byte[] after = new byte[4];
             for (int r = 0; r < 4; r++) {
-                after[r] = (byte)(before[r] ^ word);
+                after = XOR(before, word);
             }
+
             modified.addColumn(after[0], after[1], after[2], after[3]);
         }
 
@@ -116,25 +133,14 @@ public class encrypt {
     // Generates 4*(Nr + 1) words, four for each operation of AddRoundKey, which runs (Nr + 1) times
     // KeyExpansion() has 10 fixed words called round constants
     // For AES 256, only the first 7 round constants are used
-    // Nr means 'number of rounds'; Nk means "key length"
+    // Nr means 'number of rounds'; Nk means "key length" in 32 bit words
+    // input "key" is an array of Nk words
     // variables:
     // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
     // j = index for the Rconstants ; 1 ≤ j ≤ 10
-    public static byte[][] KeyExpansion(key){
-        int Nr = 14; // Nr is 14 for AES 256
-        int Nk = 8; // Nk is 8 for AES 256
+    public static byte[][] KeyExpansion(byte[] key){
+        
         byte [][] w = new byte[4][4 * (Nr + 1)]; // The output array of words; key schedule
-        byte [][] Rcon = {{0x01, 0x00, 0x00, 0x00},
-                        {0x02, 0x00, 0x00, 0x00},
-                        {0x04, 0x00, 0x00, 0x00},
-                        {0x08, 0x00, 0x00, 0x00},
-                        {0x10, 0x00, 0x00, 0x00},
-                        {0x20, 0x00, 0x00, 0x00},
-                        {0x40, 0x00, 0x00, 0x00},
-                        {(byte)0x80, 0x00, 0x00, 0x00},
-                        {0x1b, 0x00, 0x00, 0x00},
-                        {0x36, 0x00, 0x00, 0x00}};
-
 
         for (int i = 1; i <= Nr + 1; i++){
             if (i % Nk == 0 && i != 0){ // 
@@ -158,6 +164,8 @@ public class encrypt {
         return new byte[]{(byte)sbox[b[0] & 0xff], (byte)sbox[b[1] & 0xff], (byte)sbox[b[2] & 0xff], (byte)sbox[b[3] & 0xff]};
     }
 
+    // Used by KeyExpansion()
+    // word ^ word, aka four bytes ^ fours bytes shortcut
     public static byte[] XOR (byte [] word1, byte[] word2){
         byte [] b = new byte[4];
         for (int i = 0; i < word1.length; i++){
@@ -166,21 +174,32 @@ public class encrypt {
         return b;
     }
 
-    // 
-    public static Matrix Cipher(Matrix in, Nr, w){
-        Matrix state = in.copy();
+    // - KeyExpansion is called outside of Cipher()
+    // - Nr is set outside of Cipher()
+    // - in is 256 bits, or 16 bytes worth of data in array form
+    public static Matrix Cipher(byte [] in, int Nr, byte[][] w){
+        Matrix state = makeState(in);
+
         // state ← round key addition
-        for (int round = 1; round <= Nr - 1){
+        for (int round = 1; round <= Nr - 1; round++){ // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
             state = SubBytes(state);
             state = ShiftRows(state);
             state = MixColumns(state);
-            state = AddRoundKey(state, w[4 * round..4 * round + 3]);
+            state = AddRoundKey(state, w);
         }
         state = SubBytes(state);
         state = ShiftRows(state);
         // MixColumns() is omitted; idk what that means
-        state = AddRoundKey(state, w[4 * round..4 * round + 3]);
+        state = AddRoundKey(state, w);
         return state;
+    }
+
+    // The Wrapper function for everything
+    public static Matrix AES256 (byte[] input, byte[] key){
+        
+        byte [][] expanded_key = KeyExpansion(key);
+        Cipher(input, Nr, expanded_key);
+
     }
 
     public static void main(String[] args) {
@@ -198,5 +217,8 @@ public class encrypt {
         // Matrix state2 = makeState(input2);
         // state2 = ShiftRows(state2, 3);
         // System.out.println(state2);
+
+        byte [] key =
+        AES256(input, key);
     }
 }
