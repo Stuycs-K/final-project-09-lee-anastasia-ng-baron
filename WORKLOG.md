@@ -28,6 +28,9 @@
 - Wrote xTimes and Times3 methods for multiplication in GF(2^8)
 - Changed and completed MixColumns method
 
+### 5/30/24
+- Wrote AddRoundKey method
+
 
 ## Baron Ng
 
