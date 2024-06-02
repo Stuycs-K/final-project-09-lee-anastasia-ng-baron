@@ -61,3 +61,8 @@
 
 - Wrote RotWord() and SubWord()
 - Set up KeyExpansion()
+
+### 5/30/24
+
+- Struggling to implement KeyExpansion()
+
