@@ -76,6 +76,9 @@
 ### 6/3/24
 
 - Finished KeyExpansion()
+- Restructured Encrypt to work with Driver
+- Created makefile
+- Finished Driver.java
 
 ## Sources
 - https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
