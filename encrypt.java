@@ -216,8 +216,9 @@ public class encrypt {
     }
 
     // The Wrapper function for everything
-    public Matrix AES256 (String s, byte[] key){
+    public Matrix AES256 (String s, String k){
         byte[] input = s.getBytes();
+        byte[] key = k.getBytes();
         byte [][] expanded_key = KeyExpansion(key);
         return Cipher(input, Nr, expanded_key);
     }
