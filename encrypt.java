@@ -128,7 +128,7 @@ public class encrypt {
             
             byte[] before = state.m.get(c);
             int index = 4 * round + c; // round comes from Cipher()
-            byte [] word = w[index];
+            byte[] word = w[index];
             byte[] after = new byte[4];
             for (int r = 0; r < 4; r++) {
                 after = XOR(before, word);
