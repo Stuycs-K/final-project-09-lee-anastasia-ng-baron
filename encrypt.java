@@ -216,29 +216,33 @@ public class encrypt {
     }
 
     // The Wrapper function for everything
-    public Matrix AES256 (String s, byte[] key){
-        byte[] input = s.getBytes();
+    public Matrix AES256 (byte[] input, byte[] key){
+
         byte [][] expanded_key = KeyExpansion(key);
         return Cipher(input, Nr, expanded_key);
     }
 
     public static void main(String[] args) {
-        byte b = (byte)0b01101011;
-        byte[] input = {(byte)0b10101010, (byte)0b11111100, (byte)0b01010011, (byte)0b11001010, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
-        Matrix state = makeState(input);
-        //System.out.println((int)b);
-        // SubBytes(state);
+        // byte b = (byte)0b01101011;
+        // byte[] input = {(byte)0b10101010, (byte)0b11111100, (byte)0b01010011, (byte)0b11001010, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
+        // Matrix state = makeState(input);
+        // //System.out.println((int)b);
+        // // SubBytes(state);
+        // // System.out.println(state);
+
+        // state = MixColumns(state);
         // System.out.println(state);
+        String s1 = "abcdefghijklmnop";
+        String s2 = "abcdefghijklmnopqrstuvwxyzabcdef";
 
-        state = MixColumns(state);
-        System.out.println(state);
-
-        byte[] input2 = {(byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)3, (byte)3, (byte)3, (byte)3, (byte)4, (byte)4, (byte)4, (byte)4};
-        byte [] key = {(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0};
+        byte[] input2 = s1.getBytes();
+        byte [] key = s2.getBytes();
         // state2 = ShiftRows(state2, 3);
         // System.out.println(state2);
         
-        // Matrix out = AES256(input, key);
+        // Matrix out = AES256(input3, key);
         // System.out.println(out);
+
+        System.out.println ()
     }
 }
