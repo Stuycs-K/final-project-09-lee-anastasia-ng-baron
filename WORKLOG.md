@@ -73,6 +73,10 @@
 - Revised my comprehension of the algorithm
 - Restructured methods accurately
 
+### 6/3/24
+
+- Finished KeyExpansion()
+
 ## Sources
 - https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
 - https://nvlpubs.nist.gov/nistpubs/jres/126/jres.126.024.pdf
