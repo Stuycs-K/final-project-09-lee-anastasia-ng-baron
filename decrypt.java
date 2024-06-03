@@ -1,3 +1,3 @@
-public class decrypt {
+public class Decrypt {
     
 }
