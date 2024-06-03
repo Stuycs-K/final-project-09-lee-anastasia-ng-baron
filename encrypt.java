@@ -151,19 +151,24 @@ public class encrypt {
     public static byte[][] KeyExpansion(byte[] key){ // key is 32 bytes
         
         byte [][] w = new byte[4 * (Nr + 1)][4]; // The output array of words; key schedule
-
-        for (int i = 0; i <= Nk - 1; i++){// iterates through the 8 words in the key
+        
+        int i = 0;
+        
+        while (i <= Nk - 1){// iterates through the 8 words in the key
             w[i] = new byte []{key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3]};
+            i++;
         } // First Nk words of the expanded key, w, are the key itself
 
-        for (int i = 1; i <= Nr + 1; i++){
-            if (i % Nk == 0 && i != 0){ // 
-                w[i] = XOR (XOR(w[i - Nk], SubWord(RotWord(w[i - 1]))), Rcon[i / Nk]);
-            } else if ((i + 4) % Nk == 0){
-                w[i] = XOR(w[i - Nk], SubWord(w[i - 1]));
+        while (i <= 4 * Nr + 3){
+            byte[] temp = w[i - 1];
+            if (i % Nk == 0){
+                w[i] = XOR (SubWord(RotWord(temp)), Rcon[i / Nk]);
+            } else if (Nk > 6 && i % Nk == 4){
+                w[i] = SubWord(temp);
             } else {
-                w[i] = XOR(w[i - Nk], w[i - 1]);
+                w[i] = XOR (w[i - Nk], temp);
             }
+            i++;
         }
         return w; // if I am understanding this correctly, this should be be 60 x 4, enough for (Nr + 1) round keys!
     }
