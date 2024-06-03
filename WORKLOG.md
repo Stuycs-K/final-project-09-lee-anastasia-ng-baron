@@ -72,3 +72,8 @@
 - Fixed AddRoundKey()
 - Revised my comprehension of the algorithm
 - Restructured methods accurately
+
+## Sources
+- https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
+- https://nvlpubs.nist.gov/nistpubs/jres/126/jres.126.024.pdf
+- https://www.devglan.com/online-tools/aes-encryption-decryption
