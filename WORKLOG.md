@@ -66,3 +66,9 @@
 
 - Struggling to implement KeyExpansion()
 
+### 5/31/24
+
+- Fixed ShiftRows()
+- Fixed MixColumns()
+- Revised my comprehension of the algorithm
+- Restructured methods accurately
