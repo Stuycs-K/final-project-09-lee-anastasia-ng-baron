@@ -216,8 +216,9 @@ public class encrypt {
     }
 
     // The Wrapper function for everything
-    public Matrix AES256 (byte[] input, byte[] key){
-
+    public Matrix AES256 (String s, String k){
+        byte[] input = s.getBytes();
+        byte[] key = k.getBytes();
         byte [][] expanded_key = KeyExpansion(key);
         return Cipher(input, Nr, expanded_key);
     }
@@ -235,14 +236,12 @@ public class encrypt {
         String s1 = "abcdefghijklmnop";
         String s2 = "abcdefghijklmnopqrstuvwxyzabcdef";
 
-        byte[] input2 = s1.getBytes();
-        byte [] key = s2.getBytes();
         // state2 = ShiftRows(state2, 3);
         // System.out.println(state2);
         
         // Matrix out = AES256(input3, key);
         // System.out.println(out);
 
-        System.out.println ()
+        System.out.println (AES256(s1, s2));
     }
 }
