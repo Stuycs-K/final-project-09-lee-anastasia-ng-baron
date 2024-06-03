@@ -26,3 +26,7 @@ Matrix.class:
 Driver.class:
 
 	@javac Driver.java
+
+clean:
+
+	@rm *.class

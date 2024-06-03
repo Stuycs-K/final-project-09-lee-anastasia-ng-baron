@@ -4,7 +4,7 @@ public class Driver {
         String s1 = "abcdefghijklmnop";
         String s2 = "abcdefghijklmnopqrstuvwxyzabcdef";
         
-        System.out.println (s1.length() + " " + s2.length());
+        //System.out.println (s1.length() + " " + s2.length());
 
         if (args[1] != null && args[2] != null){
             if (args[1].length() == 16){
@@ -26,6 +26,7 @@ public class Driver {
             Encrypt t = new Encrypt(s1, s2);
 
             System.out.println (t.AES256(s1, s2));
+            System.out.println (t.AES256(s1, s2).toSuperString());
         } else if (args[0].equals("decrypt")){
            
         }

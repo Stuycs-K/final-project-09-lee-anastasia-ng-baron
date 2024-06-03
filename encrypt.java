@@ -82,9 +82,9 @@ public class Encrypt {
 
         for (int col = 0; col < 4; col++){
             byte a = state[col][0];
-            byte b = state[1][col + 1 % 4]; // row 2
-            byte c = state[2][col + 2 % 4]; // row 3
-            byte d = state[3][col + 3 % 4]; // row 4
+            byte b = state[1][(col + 1) % 4]; // row 2
+            byte c = state[2][(col + 2) % 4]; // row 3
+            byte d = state[3][(col + 3) % 4]; // row 4
             modified_state.addColumn(a,b,c,d);
         }
 
