@@ -244,4 +244,6 @@ public class encrypt {
 
         System.out.println (AES256(s1, s2));
     }
+
+    public static void test() 
 }
