@@ -1,7 +1,7 @@
 public class Encrypt {
 
-    private String input = "aaaaaaaaaaaaaaaa";
-    private String key = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    private String input;
+    private String key;
 
     public Encrypt (String in, String k){
         input = in;
