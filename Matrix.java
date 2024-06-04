@@ -68,4 +68,18 @@ public class Matrix {
     }
     return s;
   }
+
+  public String toSuperString() {
+    String s = "";
+    if (m.size() == 0) {
+      return s;
+    }
+
+    for (int i=0; i<4; i++) {
+      for (byte[] p : m) {
+        s += (char)(p[i]);
+      }
+    }
+    return s;
+  }
 }//Matrix
