@@ -1,5 +1,6 @@
 import java.util.*;
 public class Decrypt {
+    private int round = 0;
     private static Integer[] sbox = {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
         0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
         0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15,
@@ -58,5 +59,35 @@ public class Decrypt {
             prod = (byte)(prod ^ 0x1b);
         }
         return prod;
+    }
+
+    private static byte[] XOR (byte [] word1, byte[] word2){
+
+        byte [] b = new byte[4];
+        for (int i = 0; i < word1.length; i++){
+            b[i] = (byte)(word1[i] ^ word2[i]);
+        }
+        return b;
+    }
+
+    // AddRoundKey is its own inverse
+    private Matrix AddRoundKey(Matrix state, byte[][] w){
+
+        Matrix modified = new Matrix();
+
+        for (int c = 0; c < 4; c++) {
+            
+            byte[] before = state.m.get(c);
+            int index = 4 * round + c; // round comes from Cipher()
+            byte[] word = w[index];
+            byte[] after = new byte[4];
+            for (int r = 0; r < 4; r++) {
+                after = XOR(before, word);
+            }
+
+            modified.addColumn(after[0], after[1], after[2], after[3]);
+        }
+
+        return modified;
     }
 }

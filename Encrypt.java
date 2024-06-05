@@ -191,7 +191,7 @@ public class Encrypt {
         return new byte[]{(byte)sbox[b[0] & 0xff], (byte)sbox[b[1] & 0xff], (byte)sbox[b[2] & 0xff], (byte)sbox[b[3] & 0xff]};
     }
 
-    // Used by KeyExpansion()
+    // Used by KeyExpansion() and AddRoundKey()
     // word ^ word, aka four bytes ^ fours bytes shortcut
     private static byte[] XOR (byte [] word1, byte[] word2){
 
