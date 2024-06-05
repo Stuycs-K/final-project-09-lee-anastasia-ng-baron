@@ -51,4 +51,12 @@ public class Decrypt {
 
         return modified_state;
     }
+
+    private static byte xTimes(byte b) {
+        byte prod = (byte)(b << 1);
+        if (b >> 7 == 1) {
+            prod = (byte)(prod ^ 0x1b);
+        }
+        return prod;
+    }
 }
