@@ -88,8 +88,13 @@
 
 - Finished KeyExpansion()
 - Restructured Encrypt to work with Driver
-- Created makefile
-- Finished Driver.java
+- Wrote makefile
+- Wrote Driver.java
+
+### 6/4/24
+
+- Restructured Decrypt.java to look similar to Encrypt
+- Included the Inverse functions
 
 ## Sources
 - https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf

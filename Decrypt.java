@@ -35,7 +35,7 @@ public class Decrypt {
         return state;
     }
 
-    private static Integer[] invsbox = {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
+    private static Integer[] sbox = {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
         0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
         0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15,
         0x04, 0xc7, 0x23, 0xc3, 0x18, 0x96, 0x05, 0x9a, 0x07, 0x12, 0x80, 0xe2, 0xeb, 0x27, 0xb2, 0x75,
@@ -78,9 +78,9 @@ public class Decrypt {
 
         for (int col = 0; col < 4; col++){
             byte a = state[col][0];
-            byte b = state[1][(col + 3) % 4]; // row 2
-            byte c = state[2][(col + 2) % 4]; // row 3
-            byte d = state[3][(col + 1) % 4]; // row 4
+            byte b = state[1][(col + 3) % 4]; // row 2, +3 bc otherwise it would be negative indexing
+            byte c = state[2][(col + 2) % 4]; // row 3, +2 bc otherwise it would be negative indexing
+            byte d = state[3][(col + 1) % 4]; // row 4, +1 bc otherwise it would be negative indexing
             modified_state.addColumn(a,b,c,d);
         }
 
@@ -96,11 +96,9 @@ public class Decrypt {
         for (int c = 0; c < 4; c++) {
             byte[] given = state.m.get(c);
             byte[] col = new byte[4];
-            col[0] = (byte)(xTimes(given[0]) ^ Times3(given[1]) ^ given[2] ^ given[3]);
-            col[1] = (byte)(given[0] ^ xTimes(given[1]) ^ Times3(given[2]) ^ given[3]);
-            col[2] = (byte)(given[0] ^ given[1] ^ xTimes(given[2]) ^ Times3(given[3]));
-            col[3] = (byte)(Times3(given[0]) ^ given[1] ^ given[2] ^ xTimes(given[3]));
-            a.addColumn(col[0], col[1], col[2], col[3]);
+            
+            
+
         }
 
         return a;
@@ -147,7 +145,7 @@ public class Decrypt {
     // variables:
     // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
     // j = index for the Rconstants ; 1 ≤ j ≤ 10
-    private static byte[][] InvKeyExpansion(byte[] key){ // key is 32 bytes
+    private static byte[][] KeyExpansion(byte[] key){ // key is 32 bytes
         
         byte [][] w = new byte[4 * (Nr + 1)][4]; // The output array of words; key schedule
         
@@ -171,6 +169,11 @@ public class Decrypt {
         }
         return w; // if I am understanding this correctly, this should be be 60 x 4, enough for (Nr + 1) round keys!
     }
+
+    private static byte[][] KeyExpansionEIC(byte[] key){ // key is 32 bytes
+        
+        return new byte[1][1];
+    }
     
     // Used by KeyExpansion()
     private static byte[] RotWord(byte [] word){
@@ -179,7 +182,7 @@ public class Decrypt {
     }
     // Used by KeyExpansion()
     private static byte[] SubWord(byte [] b){
-        return new byte[]{(byte)sbox[b[0] & 0xff], (byte)sbox[b[1] & 0xff], (byte)sbox[b[2] & 0xff], (byte)sbox[b[3] & 0xff]};
+        return new byte[]{(byte)(int)sbox[b[0] & 0xff], (byte)(int)sbox[b[1] & 0xff], (byte)(int)sbox[b[2] & 0xff], (byte)(int)sbox[b[3] & 0xff]};
     }
 
     private static byte[] XOR (byte [] word1, byte[] word2){
@@ -194,7 +197,7 @@ public class Decrypt {
     // - KeyExpansion is called outside of Cipher()
     // - Nr is set outside of Cipher()
     // - in is 256 bits, or 16 bytes worth of data in array form
-    private Matrix Cipher(byte [] in, int Nr, byte[][] w){
+    private Matrix InvCipher(byte [] in, int Nr, byte[][] w){
 
         Matrix state = makeState(in);
         state = AddRoundKey(state, w);
@@ -214,11 +217,35 @@ public class Decrypt {
     }
 
 
+    // I've got no clue what this does, but im just gonna leave it here
+    private Matrix EqInvCipher(byte [] in, int Nr, byte[][] dw){
+
+        Matrix state = makeState(in);
+        state = AddRoundKey(state, dw);
+
+        // state <- round key addition
+        for (round = Nr -1; round >= 1; round--){ // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
+            state = InvSubBytes(state);
+            state = InvShiftRows(state);
+            state = InvMixColumns(state);
+            state = AddRoundKey(state,dw);
+        }
+        state = InvSubBytes(state);
+        state = InvShiftRows(state);
+        // MixColumns() is omitted; idk what that means
+        state = AddRoundKey(state, dw); // 0
+        state = AddRoundKey(state, dw); // 1
+        state = AddRoundKey(state, dw); // 2
+        state = AddRoundKey(state, dw); // 3
+        return state;
+    }
+
+
     // The Wrapper function for everything
     public Matrix AES256 (String s, String k){
         byte[] input = s.getBytes();
         byte[] key = k.getBytes();
-        byte [][] expanded_key = InvKeyExpansion(key);
+        byte [][] expanded_key = KeyExpansion(key); // KeyExpansion is supposedly the same
         return InvCipher(input, Nr, expanded_key);
     }
 
