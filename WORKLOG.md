@@ -31,6 +31,17 @@
 ### 5/30/24
 - Wrote AddRoundKey method
 
+### 6/3/24
+- Edited wrapper function to allow for string input and key
+- File maintenance: removed class files, renamed files
+- Added dependencies to makefile
+- Edited Driver methods so that the input can be any length, not just 16
+
+### 6/5/24
+- Copied over sbox, wrote InvSubBytes method
+- Wrote InvShiftRows method
+- Copied over xTimes, XOR, AddRoundKey (which is its own inverse) from Encrypt to Decrypt
+
 
 ## Baron Ng
 
