@@ -87,8 +87,8 @@ public class Decrypt {
         return modified_state;
     }
 
-    // MixColumns() multiplies each of the four columns of the state by a fixed matrix.
-    // The Fixed Matrix = [a0, a1, a2, a3] = [{02}, {01}, {01}, {03}]. 
+    // InvMixColumns() multiplies each of the four columns of the state by a fixed matrix.
+    // The Fixed Matrix = [a0, a1, a2, a3] = [{0e}, {09}, {0d}, {0b}]. 
     private static Matrix InvMixColumns(Matrix state) {
 
         Matrix a = new Matrix();
@@ -97,7 +97,10 @@ public class Decrypt {
             byte[] given = state.m.get(c);
             byte[] col = new byte[4];
             
-            
+            col[0] = (byte)(TimesE(given[0]) ^ TimesB(given[1]) ^ TimesD(given[2]) ^ Times9(given[3]));
+            col[1] = (byte)(Times9(given[0]) ^ TimesE(given[1]) ^ TimesB(given[2]) ^ TimesD(given[3]));
+            col[2] = (byte)(TimesD(given[0]) ^ Times9(given[1]) ^ TimesE(given[2]) ^ TimesB(given[3]));
+            col[3] = (byte)(TimesB(given[0]) ^ TimesD(given[1]) ^ Times9(given[2]) ^ TimesE(given[3]));
 
         }
 
