@@ -5,19 +5,18 @@ public class Driver {
         String s2 = "abcdefghijklmnopqrstuvwxyzabcdef";
         
         //System.out.println (s1.length() + " " + s2.length());
-
         if (args[1] != null && args[2] != null){
-            if (args[1].length() == 16){
+            //if (args[1].length() == 16){
                 s1 = args[1];
-            } else {
-                System.out.println ("The Input is not the correct length of 16:" + args[0]);
-                return;
-            }
+            //} else {
+            //    System.out.println ("The Input is not the correct length of 16: " + args[1]);
+            //    return;
+            //}
 
             if (args[2].length() == 32){
                 s2 = args[2];
             } else {
-                System.out.println ("The Input is not the correct length of 32:" + args[1]);
+                System.out.println ("The Key is not the correct length of 32: " + args[2]);
                 return;
             }
         }

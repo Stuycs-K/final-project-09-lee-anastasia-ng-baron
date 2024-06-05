@@ -209,7 +209,7 @@ public class Encrypt {
 
         Matrix state = makeState(in);
 
-        // state ← round key addition
+        // state <- round key addition
         for (round = 1; round <= Nr - 1; round++){ // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
             state = SubBytes(state);
             state = ShiftRows(state);
