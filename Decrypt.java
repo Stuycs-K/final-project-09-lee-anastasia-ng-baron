@@ -115,8 +115,14 @@ public class Decrypt {
         return prod;
     }
 
-    private static byte Times3(byte b) {
-        return (byte)(xTimes(b) ^ xTimes(xTimes(b)));
+    // 09 = 08 + 01
+    private static byte Times9(byte b) {
+        return (byte)(b ^ xTimes(xTimes(xTimes(b))));
+    }
+
+    // 0B = 08 + 02 + 01
+    private static byte TimesB(byte b) {
+        return (byte)(b^ xTimes(b) ^ xTimes(xTimes(xTimes(b))));
     }
 
     // AddRoundKey is its own inverse
