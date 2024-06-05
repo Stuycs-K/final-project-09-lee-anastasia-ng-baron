@@ -231,8 +231,4 @@ public class Encrypt {
         return Cipher(input, Nr, expanded_key);
     }
 
-    public static void main(String[] args) {
-        //System.out.println ("");
-    }
-
 }
