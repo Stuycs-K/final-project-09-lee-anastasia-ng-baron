@@ -30,4 +30,25 @@ public class Decrypt {
 
         return state;
     }
+
+    private static Matrix InvShiftRows(Matrix m){
+
+        byte [] c1 = m.get(0);
+        byte [] c2 = m.get(1);
+        byte [] c3 = m.get(2);
+        byte [] c4 = m.get(3);
+        byte [][] state = {c1, c2, c3, c4};
+        
+        Matrix modified_state = new Matrix();
+
+        for (int col = 0; col < 4; col++){
+            byte a = state[col][0];
+            byte b = state[1][(col + 3) % 4]; // row 2
+            byte c = state[2][(col + 2) % 4]; // row 3
+            byte d = state[3][(col + 1) % 4]; // row 4
+            modified_state.addColumn(a,b,c,d);
+        }
+
+        return modified_state;
+    }
 }
