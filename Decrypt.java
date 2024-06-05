@@ -1,7 +1,41 @@
 import java.util.*;
+
 public class Decrypt {
-    private int round = 0;
-    private static Integer[] sbox = {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
+
+    private String input;
+    private String key;
+
+    public Decrypt (String in, String k){
+        input = in;
+        key = k;
+    }
+
+    private static int Nr = 14; // Nr is 14 for AES 256, number of rounds
+    private static int Nk = 8; // Nk is 8 for AES 256, key length in words
+    private static byte [][] Rcon = {{0x01, 0x00, 0x00, 0x00},
+                                    {0x02, 0x00, 0x00, 0x00},
+                                    {0x04, 0x00, 0x00, 0x00},
+                                    {0x08, 0x00, 0x00, 0x00},
+                                    {0x10, 0x00, 0x00, 0x00},
+                                    {0x20, 0x00, 0x00, 0x00},
+                                    {0x40, 0x00, 0x00, 0x00},
+                                    {(byte)0x80, 0x00, 0x00, 0x00},
+                                    {0x1b, 0x00, 0x00, 0x00},
+                                    {0x36, 0x00, 0x00, 0x00}};
+
+    private int round = Nr;
+    
+    private static Matrix makeState(byte[] input) { //Takes 16 bytes and creates a 4x4 matrix
+
+        Matrix state = new Matrix();
+        for (int i = 0; i < 4; i++) {
+            state.addColumn(input[4*i], input[4*i+1], input[4*i+2], input[4*i+3]);
+        }
+        
+        return state;
+    }
+
+    private static Integer[] invsbox = {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
         0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
         0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15,
         0x04, 0xc7, 0x23, 0xc3, 0x18, 0x96, 0x05, 0x9a, 0x07, 0x12, 0x80, 0xe2, 0xeb, 0x27, 0xb2, 0x75,
@@ -53,6 +87,25 @@ public class Decrypt {
         return modified_state;
     }
 
+    // MixColumns() multiplies each of the four columns of the state by a fixed matrix.
+    // The Fixed Matrix = [a0, a1, a2, a3] = [{02}, {01}, {01}, {03}]. 
+    private static Matrix InvMixColumns(Matrix state) {
+
+        Matrix a = new Matrix();
+
+        for (int c = 0; c < 4; c++) {
+            byte[] given = state.m.get(c);
+            byte[] col = new byte[4];
+            col[0] = (byte)(xTimes(given[0]) ^ Times3(given[1]) ^ given[2] ^ given[3]);
+            col[1] = (byte)(given[0] ^ xTimes(given[1]) ^ Times3(given[2]) ^ given[3]);
+            col[2] = (byte)(given[0] ^ given[1] ^ xTimes(given[2]) ^ Times3(given[3]));
+            col[3] = (byte)(Times3(given[0]) ^ given[1] ^ given[2] ^ xTimes(given[3]));
+            a.addColumn(col[0], col[1], col[2], col[3]);
+        }
+
+        return a;
+    }
+
     private static byte xTimes(byte b) {
         byte prod = (byte)(b << 1);
         if (b >> 7 == 1) {
@@ -61,13 +114,8 @@ public class Decrypt {
         return prod;
     }
 
-    private static byte[] XOR (byte [] word1, byte[] word2){
-
-        byte [] b = new byte[4];
-        for (int i = 0; i < word1.length; i++){
-            b[i] = (byte)(word1[i] ^ word2[i]);
-        }
-        return b;
+    private static byte Times3(byte b) {
+        return (byte)(xTimes(b) ^ xTimes(xTimes(b)));
     }
 
     // AddRoundKey is its own inverse
@@ -90,4 +138,88 @@ public class Decrypt {
 
         return modified;
     }
+
+    // Generates 4*(Nr + 1) words, four for each operation of AddRoundKey, which runs (Nr + 1) times
+    // KeyExpansion() has 10 fixed words called round constants
+    // For AES 256, only the first 7 round constants are used
+    // Nr means 'number of rounds'; Nk means "key length" in 32 bit words
+    // input "key" is an array of Nk words
+    // variables:
+    // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
+    // j = index for the Rconstants ; 1 ≤ j ≤ 10
+    private static byte[][] InvKeyExpansion(byte[] key){ // key is 32 bytes
+        
+        byte [][] w = new byte[4 * (Nr + 1)][4]; // The output array of words; key schedule
+        
+        int i = 0;
+        
+        while (i <= Nk - 1){// iterates through the 8 words in the key
+            w[i] = new byte []{key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3]};
+            i++;
+        } // First Nk words of the expanded key, w, are the key itself
+
+        while (i <= 4 * Nr + 3){
+            byte[] temp = w[i - 1];
+            if (i % Nk == 0){
+                w[i] = XOR (SubWord(RotWord(temp)), Rcon[i / Nk]);
+            } else if (Nk > 6 && i % Nk == 4){
+                w[i] = SubWord(temp);
+            } else {
+                w[i] = XOR (w[i - Nk], temp);
+            }
+            i++;
+        }
+        return w; // if I am understanding this correctly, this should be be 60 x 4, enough for (Nr + 1) round keys!
+    }
+    
+    // Used by KeyExpansion()
+    private static byte[] RotWord(byte [] word){
+        byte [] modified_word = {word[1], word[2], word[3], word[0]};
+        return modified_word;
+    }
+    // Used by KeyExpansion()
+    private static byte[] SubWord(byte [] b){
+        return new byte[]{(byte)sbox[b[0] & 0xff], (byte)sbox[b[1] & 0xff], (byte)sbox[b[2] & 0xff], (byte)sbox[b[3] & 0xff]};
+    }
+
+    private static byte[] XOR (byte [] word1, byte[] word2){
+
+        byte [] b = new byte[4];
+        for (int i = 0; i < word1.length; i++){
+            b[i] = (byte)(word1[i] ^ word2[i]);
+        }
+        return b;
+    }
+
+    // - KeyExpansion is called outside of Cipher()
+    // - Nr is set outside of Cipher()
+    // - in is 256 bits, or 16 bytes worth of data in array form
+    private Matrix Cipher(byte [] in, int Nr, byte[][] w){
+
+        Matrix state = makeState(in);
+        state = AddRoundKey(state, w);
+
+        // state <- round key addition
+        for (round = Nr -1; round >= 1; round--){ // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
+            state = InvShiftRows(state);
+            state = InvSubBytes(state);
+            state = AddRoundKey(state, w);
+            state = InvMixColumns(state);
+        }
+        state = InvShiftRows(state);
+        state = InvSubBytes(state);
+        // MixColumns() is omitted; idk what that means
+        state = AddRoundKey(state, w);
+        return state;
+    }
+
+
+    // The Wrapper function for everything
+    public Matrix AES256 (String s, String k){
+        byte[] input = s.getBytes();
+        byte[] key = k.getBytes();
+        byte [][] expanded_key = InvKeyExpansion(key);
+        return InvCipher(input, Nr, expanded_key);
+    }
+
 }
