@@ -69,6 +69,21 @@ public class Matrix {
     return s;
   }
 
+  public String toIntString() {
+    String s = "";
+    if (m.size() == 0) {
+      return s;
+    }
+
+    for (int i=0; i<4; i++) {
+      for (byte[] p : m) {
+        s+= (int)p[i] + " ";
+      }
+      s+= "\n";
+    }
+    return s;
+  }
+
   public String toSuperString() {
     String s = "";
     if (m.size() == 0) {

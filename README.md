@@ -5,6 +5,6 @@ Anastasia Lee, Baron Ng
 
 Group Name: Cryptic BarLee
 
-Topic: Advanced Encryption Standard (AES)
+Topic: Advanced Encryption Standard (AES) - ECB Mode
 ## Overview
 ## Instructions

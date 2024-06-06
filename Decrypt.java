@@ -78,9 +78,9 @@ public class Decrypt {
 
         for (int col = 0; col < 4; col++){
             byte a = state[col][0];
-            byte b = state[1][(col + 3) % 4]; // row 2, +3 bc otherwise it would be negative indexing
-            byte c = state[2][(col + 2) % 4]; // row 3, +2 bc otherwise it would be negative indexing
-            byte d = state[3][(col + 1) % 4]; // row 4, +1 bc otherwise it would be negative indexing
+            byte b = state[(col + 3) % 4][1]; // row 2, +3 bc otherwise it would be negative indexing
+            byte c = state[(col + 2) % 4][2]; // row 3, +2 bc otherwise it would be negative indexing
+            byte d = state[(col + 1) % 4][3]; // row 4, +1 bc otherwise it would be negative indexing
             modified_state.addColumn(a,b,c,d);
         }
 
@@ -97,10 +97,10 @@ public class Decrypt {
             byte[] given = state.m.get(c);
             byte[] col = new byte[4];
             
-            col[0] = (byte)(TimesE(given[0]) ^ TimesB(given[1]) ^ TimesD(given[2]) ^ Times9(given[3]));
-            col[1] = (byte)(Times9(given[0]) ^ TimesE(given[1]) ^ TimesB(given[2]) ^ TimesD(given[3]));
-            col[2] = (byte)(TimesD(given[0]) ^ Times9(given[1]) ^ TimesE(given[2]) ^ TimesB(given[3]));
-            col[3] = (byte)(TimesB(given[0]) ^ TimesD(given[1]) ^ Times9(given[2]) ^ TimesE(given[3]));
+            col[0] = (TimesE(given[0]) ^ TimesB(given[1]) ^ TimesD(given[2]) ^ Times9(given[3]));
+            col[1] = (Times9(given[0]) ^ TimesE(given[1]) ^ TimesB(given[2]) ^ TimesD(given[3]));
+            col[2] = (TimesD(given[0]) ^ Times9(given[1]) ^ TimesE(given[2]) ^ TimesB(given[3]));
+            col[3] = (TimesB(given[0]) ^ TimesD(given[1]) ^ Times9(given[2]) ^ TimesE(given[3]));
 
         }
 

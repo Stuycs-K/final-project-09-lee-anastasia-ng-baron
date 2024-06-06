@@ -82,9 +82,9 @@ public class Encrypt {
 
         for (int col = 0; col < 4; col++){
             byte a = state[col][0];
-            byte b = state[1][(col + 1) % 4]; // row 2
-            byte c = state[2][(col + 2) % 4]; // row 3
-            byte d = state[3][(col + 3) % 4]; // row 4
+            byte b = state[(col + 1) % 4][1]; // row 2
+            byte c = state[(col + 2) % 4][2]; // row 3
+            byte d = state[(col + 3) % 4][3]; // row 4
             modified_state.addColumn(a,b,c,d);
         }
 
@@ -135,12 +135,10 @@ public class Encrypt {
         for (int c = 0; c < 4; c++) {
             
             byte[] before = state.m.get(c);
-            int index = 4 * round + c; // round comes from Cipher()
+            int index = (4 * round) + c; // round comes from Cipher()
             byte[] word = w[index];
             byte[] after = new byte[4];
-            for (int r = 0; r < 4; r++) {
-                after = XOR(before, word);
-            }
+            after = XOR(before, word);
 
             modified.addColumn(after[0], after[1], after[2], after[3]);
         }
@@ -167,12 +165,12 @@ public class Encrypt {
             i++;
         } // First Nk words of the expanded key, w, are the key itself
 
-        while (i <= 4 * Nr + 3){
-            byte[] temp = w[i - 1];
+        while (i <= 4 * 15 - 1){ // 15 as req number of rounds
+            byte[] temp = w[i - 1]; // researched from Wikipedia
             if (i % Nk == 0){
                 w[i] = XOR (SubWord(RotWord(temp)), Rcon[i / Nk]);
             } else if (Nk > 6 && i % Nk == 4){
-                w[i] = SubWord(temp);
+                w[i] = XOR (w[i - Nk], SubWord(temp));
             } else {
                 w[i] = XOR (w[i - Nk], temp);
             }
@@ -230,6 +228,11 @@ public class Encrypt {
         byte[] key = k.getBytes();
         byte [][] expanded_key = KeyExpansion(key);
         return Cipher(input, Nr, expanded_key);
+    }
+
+    public static void main(String[] args) {
+        Matrix state = makeState(new byte[]{0,(byte)0,(byte)0,(byte)0,(byte)1,(byte)1,(byte)1,(byte)1,(byte)2,(byte)2,(byte)2,(byte)2,(byte)3,(byte)3,(byte)3,(byte)3,});
+        System.out.println(ShiftRows(state).toIntString());
     }
 
 }
