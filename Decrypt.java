@@ -122,7 +122,12 @@ public class Decrypt {
 
     // 0B = 08 + 02 + 01
     private static byte TimesB(byte b) {
-        return (byte)(b^ xTimes(b) ^ xTimes(xTimes(xTimes(b))));
+        return (byte)(b ^ xTimes(b) ^ xTimes(xTimes(xTimes(b))));
+    }
+
+    // 0D = 08 + 04 + 01
+    private static byte TimesD(byte b) {
+        return (byte)(b ^ xTimes(xTimes(b)) ^ xTimes(xTimes(xTimes(b))));
     }
 
     // AddRoundKey is its own inverse
