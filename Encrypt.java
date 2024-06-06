@@ -118,8 +118,9 @@ public class Encrypt {
         return prod;
     }
 
+    // 03 = 02 + 01
     private static byte Times3(byte b) {
-        return (byte)(xTimes(b) ^ xTimes(xTimes(b)));
+        return (byte)(b ^ xTimes(b));
     }
 
     // roundkey is comprised of four words from the key schedule, which is basically a list of round key words
