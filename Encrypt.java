@@ -165,12 +165,12 @@ public class Encrypt {
             i++;
         } // First Nk words of the expanded key, w, are the key itself
 
-        while (i <= 4 * Nr + 3){
-            byte[] temp = w[i - 1];
+        while (i <= 4 * 15 - 1){ // 15 as req number of rounds
+            byte[] temp = w[i - 1]; // researched from Wikipedia
             if (i % Nk == 0){
                 w[i] = XOR (SubWord(RotWord(temp)), Rcon[i / Nk]);
             } else if (Nk > 6 && i % Nk == 4){
-                w[i] = SubWord(temp);
+                w[i] = XOR (w[i - Nk], SubWord(temp));
             } else {
                 w[i] = XOR (w[i - Nk], temp);
             }
