@@ -82,9 +82,9 @@ public class Encrypt {
 
         for (int col = 0; col < 4; col++){
             byte a = state[col][0];
-            byte b = state[1][(col + 1) % 4]; // row 2
-            byte c = state[2][(col + 2) % 4]; // row 3
-            byte d = state[3][(col + 3) % 4]; // row 4
+            byte b = state[(col + 1) % 4][1]; // row 2
+            byte c = state[(col + 2) % 4][2]; // row 3
+            byte d = state[(col + 3) % 4][3]; // row 4
             modified_state.addColumn(a,b,c,d);
         }
 
@@ -230,6 +230,11 @@ public class Encrypt {
         byte[] key = k.getBytes();
         byte [][] expanded_key = KeyExpansion(key);
         return Cipher(input, Nr, expanded_key);
+    }
+
+    public static void main(String[] args) {
+        Matrix state = makeState(new byte[]{0,(byte)0,(byte)0,(byte)0,(byte)1,(byte)1,(byte)1,(byte)1,(byte)2,(byte)2,(byte)2,(byte)2,(byte)3,(byte)3,(byte)3,(byte)3,});
+        System.out.println(ShiftRows(state).toIntString());
     }
 
 }
