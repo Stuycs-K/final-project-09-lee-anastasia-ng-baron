@@ -135,12 +135,10 @@ public class Encrypt {
         for (int c = 0; c < 4; c++) {
             
             byte[] before = state.m.get(c);
-            int index = 4 * round + c; // round comes from Cipher()
+            int index = (4 * round) + c; // round comes from Cipher()
             byte[] word = w[index];
             byte[] after = new byte[4];
-            for (int r = 0; r < 4; r++) {
-                after = XOR(before, word);
-            }
+            after = XOR(before, word);
 
             modified.addColumn(after[0], after[1], after[2], after[3]);
         }
