@@ -174,17 +174,9 @@ public class Encrypt {
         while (i <= 4 * Nr + 3){ // 15 as req number of rounds
             byte[] temp = w[i - 1]; // researched from Wikipedia
             if (i % Nk == 0){
-                System.out.println (wordToString(RotWord(temp)));
-                System.out.println (wordToString(SubWord(RotWord(temp))));
                 temp = XOR (SubWord(RotWord(temp)), Rcon[i / Nk]);
-                System.out.println ("case 1:" + i);
             } else if ((Nk > 6) && (i % Nk == 4)){
-                System.out.println (wordToString(SubWord(temp)));
                 temp = SubWord(temp);
-                System.out.println ("case 2:" + i);
-            } else {
-                System.out.println (wordToString(temp));
-                System.out.println ("case 3:" + i);
             }
             w[i] = XOR (w[i - Nk], temp);
             i++;
