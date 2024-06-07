@@ -168,15 +168,16 @@ public class Encrypt {
             i++;
         } // First Nk words of the expanded key, w, are the key itself
 
-        while (i <= 4 * 15 - 1){ // 15 as req number of rounds
+        // ---------Everything before this point works ------------
+
+        while (i <= 4 * Nr + 3){ // 15 as req number of rounds
             byte[] temp = w[i - 1]; // researched from Wikipedia
             if (i % Nk == 0){
-                w[i] = XOR (SubWord(RotWord(temp)), Rcon[i / Nk]);
-            } else if (Nk > 6 && i % Nk == 4){
-                w[i] = XOR (w[i - Nk], SubWord(temp));
-            } else {
-                w[i] = XOR (w[i - Nk], temp);
+                temp = XOR (SubWord(RotWord(temp)), Rcon[i / Nk]);
+            } else if ((Nk > 6) && (i % Nk == 4)){
+                temp = SubWord(temp);
             }
+            w[i] = XOR (w[i - Nk], temp);
             i++;
         }
         return w; // if I am understanding this correctly, this should be be 60 x 4, enough for (Nr + 1) round keys!
@@ -239,17 +240,19 @@ public class Encrypt {
         //System.out.println(ShiftRows(state).toIntString());
         System.out.println (keyScheduleToString(KeyExpansion(key)));
         //System.out.println (Arrays.deepToString(KeyExpansion(key)));
+        System.out.println (sbox[0x20]);
     }
 
     public static String keyScheduleToString(byte [][] key) {
         String s = "";
     
-        for (byte[] roundkey : key) {
+        for (int j = 0; j < key.length; j++) {
+            byte[] roundkey = key[j];
             for (int i=0; i<4; i++) {
-                String s1 = String.format("%05X", (roundkey[i] & 0xff));
+                String s1 = String.format("%05X", (roundkey[i] & 0xff)).substring(3,5);
                 s+= s1 + " ";
             }
-            s+= "\n";
+            s+= " " + j + "\n";
         }
         return s;
       }
