@@ -12,7 +12,8 @@ public class Encrypt {
 
     private static int Nr = 14; // Nr is 14 for AES 256, number of rounds
     private static int Nk = 8; // Nk is 8 for AES 256, key length in words
-    private static byte [][] Rcon = {{0x01, 0x00, 0x00, 0x00},
+    private static byte [][] Rcon = {{},
+                                    {0x01, 0x00, 0x00, 0x00},
                                     {0x02, 0x00, 0x00, 0x00},
                                     {0x04, 0x00, 0x00, 0x00},
                                     {0x08, 0x00, 0x00, 0x00},
@@ -167,15 +168,23 @@ public class Encrypt {
             w[i] = new byte []{key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3]};
             i++;
         } // First Nk words of the expanded key, w, are the key itself
-
+        System.out.println (i);
         // ---------Everything before this point works ------------
 
         while (i <= 4 * Nr + 3){ // 15 as req number of rounds
             byte[] temp = w[i - 1]; // researched from Wikipedia
             if (i % Nk == 0){
+                System.out.println (wordToString(RotWord(temp)));
+                System.out.println (wordToString(SubWord(RotWord(temp))));
                 temp = XOR (SubWord(RotWord(temp)), Rcon[i / Nk]);
+                System.out.println ("case 1:" + i);
             } else if ((Nk > 6) && (i % Nk == 4)){
+                System.out.println (wordToString(SubWord(temp)));
                 temp = SubWord(temp);
+                System.out.println ("case 2:" + i);
+            } else {
+                System.out.println (wordToString(temp));
+                System.out.println ("case 3:" + i);
             }
             w[i] = XOR (w[i - Nk], temp);
             i++;
@@ -240,7 +249,7 @@ public class Encrypt {
         //System.out.println(ShiftRows(state).toIntString());
         System.out.println (keyScheduleToString(KeyExpansion(key)));
         //System.out.println (Arrays.deepToString(KeyExpansion(key)));
-        System.out.println (sbox[0x20]);
+        System.out.println (String.format("%05X", sbox[0x20 & 0xff]));
     }
 
     public static String keyScheduleToString(byte [][] key) {
@@ -255,6 +264,16 @@ public class Encrypt {
             s+= " " + j + "\n";
         }
         return s;
-      }
+    }
+
+    public static String wordToString(byte [] word) {
+        String s = "";
+    
+        for (int i=0; i<4; i++) {
+            String s1 = String.format("%05X", (word[i] & 0xff)).substring(3,5);
+            s+= s1 + " ";
+        }
+        return s;
+    }
 
 }
