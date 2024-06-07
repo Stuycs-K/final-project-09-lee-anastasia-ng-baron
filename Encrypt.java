@@ -168,8 +168,6 @@ public class Encrypt {
             w[i] = new byte []{key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3]};
             i++;
         } // First Nk words of the expanded key, w, are the key itself
-        System.out.println (i);
-        // ---------Everything before this point works ------------
 
         while (i <= 4 * Nr + 3){ // 15 as req number of rounds
             byte[] temp = w[i - 1]; // researched from Wikipedia
@@ -235,13 +233,16 @@ public class Encrypt {
         return Cipher(input, Nr, expanded_key);
     }
 
+    public Matrix AES256 (byte[] input, byte[] key){
+        byte [][] expanded_key = KeyExpansion(key);
+        return Cipher(input, Nr, expanded_key);
+    }
+
     public static void main(String[] args) {
-        Matrix state = makeState(new byte[]{0,(byte)0,(byte)0,(byte)0,(byte)1,(byte)1,(byte)1,(byte)1,(byte)2,(byte)2,(byte)2,(byte)2,(byte)3,(byte)3,(byte)3,(byte)3,});
+        byte[] state = new byte[]{0x32, 0x43, (byte)0xf6, (byte)0xa8, (byte)0x88, 0x5a, 0x30, (byte)0x8d, 0x31, 0x31, (byte)0x98, (byte)0xa2, (byte)0xe0, 0x37, 0x07, 0x34};
         byte[] key = new byte[]{0x60, 0x3d, (byte)0xeb, 0x10, 0x15, (byte)0xca, 0x71, (byte)0xbe, 0x2b, 0x73, (byte)0xae, (byte)0xf0, (byte)0x85, 0x7d, 0x77, (byte)0x81, 0x1f, 0x35, 0x2c, 0x07, 0x3b, 0x61, 0x08, (byte)0xd7, 0x2d, (byte)0x98, 0x10, (byte)0xa3, 0x09, 0x14, (byte)0xdf, (byte)0xf4};
         //System.out.println(ShiftRows(state).toIntString());
-        System.out.println (keyScheduleToString(KeyExpansion(key)));
-        //System.out.println (Arrays.deepToString(KeyExpansion(key)));
-        System.out.println (String.format("%05X", sbox[0x20 & 0xff]));
+        //System.out.println (String.format("%05X", sbox[0x20 & 0xff]));
     }
 
     public static String keyScheduleToString(byte [][] key) {

@@ -69,6 +69,22 @@ public class Matrix {
     return s;
   }
 
+  public String toHexString() {
+    String s = "";
+    if (m.size() == 0) {
+      return s;
+    }
+
+    for (int i=0; i<4; i++) {
+      for (byte[] p : m) {
+        String s1 = String.format("%05X", (p[i] & 0xff)).substring(3,5);
+        s+= s1 + " ";
+      }
+      s+= "\n";
+    }
+    return s;
+  }
+
   public String toIntString() {
     String s = "";
     if (m.size() == 0) {
