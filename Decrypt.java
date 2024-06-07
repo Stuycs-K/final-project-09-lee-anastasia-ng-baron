@@ -109,7 +109,7 @@ public class Decrypt {
 
     private static byte xTimes(byte b) {
         byte prod = (byte)(b << 1);
-        if (b >> 7 == 1) {
+        if (b >> 7 != 0) {
             prod = (byte)(prod ^ 0x1b);
         }
         return prod;
