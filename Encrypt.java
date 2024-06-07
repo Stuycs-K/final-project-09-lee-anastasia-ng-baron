@@ -238,14 +238,35 @@ public class Encrypt {
         return Cipher(input, Nr, expanded_key);
     }
 
+    private static Matrix AddSingleRoundKey(Matrix state, byte[][] w){
+
+        Matrix modified = new Matrix();
+
+        for (int c = 0; c < 4; c++) {
+            
+            byte[] before = state.m.get(c);
+            byte[] word = w[c];
+            byte[] after = new byte[4];
+            after = XOR(before, word);
+
+            modified.addColumn(after[0], after[1], after[2], after[3]);
+        }
+        return modified;
+    }
+
     public static void main(String[] args) {
         byte[] state = new byte[]{0x32, 0x43, (byte)0xf6, (byte)0xa8, (byte)0x88, 0x5a, 0x30, (byte)0x8d, 0x31, 0x31, (byte)0x98, (byte)0xa2, (byte)0xe0, 0x37, 0x07, 0x34};
         byte[] key = new byte[]{0x60, 0x3d, (byte)0xeb, 0x10, 0x15, (byte)0xca, 0x71, (byte)0xbe, 0x2b, 0x73, (byte)0xae, (byte)0xf0, (byte)0x85, 0x7d, 0x77, (byte)0x81, 0x1f, 0x35, 0x2c, 0x07, 0x3b, 0x61, 0x08, (byte)0xd7, 0x2d, (byte)0x98, 0x10, (byte)0xa3, 0x09, 0x14, (byte)0xdf, (byte)0xf4};
-        byte[] state2 = new byte[] {(byte)0xd4, (byte)0xbf, 0x5d, 0x30, (byte)0xe0, (byte)0xb4, 0x52, (byte)0xae, (byte)0xb8, 0x41, 0x11, (byte)0xf1, 0x1e, 0x27, (byte)0x98, (byte)0xe5};
-        System.out.println(makeState(state2).toHexString() + "\n");
-        System.out.println(MixColumns(makeState(state2)).toHexString());
+        byte[] state2 = new byte[] {0x32, 0x43, (byte)0xf6, (byte)0xa8, (byte)0x88, 0x5a, 0x30, (byte)0x8d, 0x31, 0x31, (byte)0x98, (byte)0xa2, (byte)0xe0, 0x37, 0x07, 0x34};
+        byte[][] roundkey = new byte[][]{{0x2b, 0x7e, 0x15, 0x16}, {0x28, (byte)0xae, (byte)0xd2, (byte)0xa6}, {(byte)0xab, (byte)0xf7, 0x15, (byte)0x88}, {0x09, (byte)0xcf, 0x4f, 0x3c}};
+        
+        Matrix ex = makeState(new byte[]{0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3});
+        //System.out.println(makeState(state2).toHexString() + "\n");
+        //System.out.println((ShiftRows(ex)).toHexString());
         //System.out.println (String.format("%05X", sbox[0x20 & 0xff]));
     }
+
+    
 
     public static String keyScheduleToString(byte [][] key) {
         String s = "";
