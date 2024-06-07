@@ -96,6 +96,14 @@
 - Restructured Decrypt.java to look similar to Encrypt
 - Included the Inverse functions
 
+### 6/5/24
+
+- Fixed ShiftRows (again)
+
+### 6/6/24
+
+- Fixed KeyExpansion and Tested
+
 ## Sources
 - https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
 - https://nvlpubs.nist.gov/nistpubs/jres/126/jres.126.024.pdf
