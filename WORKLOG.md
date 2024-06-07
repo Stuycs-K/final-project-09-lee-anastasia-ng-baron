@@ -41,6 +41,8 @@
 - Copied over sbox, wrote InvSubBytes method
 - Wrote InvShiftRows method
 - Copied over xTimes, XOR, AddRoundKey (which is its own inverse) from Encrypt to Decrypt
+- Wrote InvMixColumns method as well as Times9, TimesB, TimesD, TimesE methods
+- Fixed Times3 method
 
 
 ## Baron Ng
