@@ -235,11 +235,23 @@ public class Encrypt {
 
     public static void main(String[] args) {
         Matrix state = makeState(new byte[]{0,(byte)0,(byte)0,(byte)0,(byte)1,(byte)1,(byte)1,(byte)1,(byte)2,(byte)2,(byte)2,(byte)2,(byte)3,(byte)3,(byte)3,(byte)3,});
-        byte[] key = new byte[]{0x60, 0x3d, 0xeb, 0x10, 0x15, 0xca, 0x71, 0xbe, 0x2b, 0x73, 0xae, 0xf0, 0x85, 0x7d, 0x77, 0x81, 0x1f, 0x35, 0x2c, 0x07, 0x3b, 0x61, 0x08, 0xd7, 0x2d, 0x98, 0x10, 0xa3, 0x09, 0x14, 0xdf, 0xf4};
+        byte[] key = new byte[]{0x60, 0x3d, (byte)0xeb, 0x10, 0x15, (byte)0xca, 0x71, (byte)0xbe, 0x2b, 0x73, (byte)0xae, (byte)0xf0, (byte)0x85, 0x7d, 0x77, (byte)0x81, 0x1f, 0x35, 0x2c, 0x07, 0x3b, 0x61, 0x08, (byte)0xd7, 0x2d, (byte)0x98, 0x10, (byte)0xa3, 0x09, 0x14, (byte)0xdf, (byte)0xf4};
         //System.out.println(ShiftRows(state).toIntString());
-        System.out.println (Arrays.toString(key));
+        System.out.println (keyScheduleToString(KeyExpansion(key)));
         //System.out.println (Arrays.deepToString(KeyExpansion(key)));
-        System.out.println (0xeb);
     }
+
+    public static String keyScheduleToString(byte [][] key) {
+        String s = "";
+    
+        for (byte[] roundkey : key) {
+            for (int i=0; i<4; i++) {
+                String s1 = String.format("%05X", (roundkey[i] & 0xff));
+                s+= s1 + " ";
+            }
+            s+= "\n";
+        }
+        return s;
+      }
 
 }
