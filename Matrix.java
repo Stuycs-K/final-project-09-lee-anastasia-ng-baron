@@ -42,6 +42,7 @@ public class Matrix {
   }//clear
 
   public byte[] get(int i) {
+    System.out.println (m.toString());
     return m.get(i);
   }
 

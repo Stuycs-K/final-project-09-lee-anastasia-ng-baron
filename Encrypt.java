@@ -10,8 +10,8 @@ public class Encrypt {
         key = k;
     }
 
-    private static int Nr = 10; // Nr is 14 for AES 256, number of rounds
-    private static int Nk = 4; // Nk is 8 for AES 256, key length in words
+    private static int Nr = 14; // Nr is 14 for AES 256, number of rounds
+    private static int Nk = 8; // Nk is 8 for AES 256, key length in words
     private static byte [][] Rcon = {{},
                                     {0x01, 0x00, 0x00, 0x00},
                                     {0x02, 0x00, 0x00, 0x00},
@@ -158,7 +158,7 @@ public class Encrypt {
     // variables:
     // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
     // j = index for the Rconstants ; 1 ≤ j ≤ 10
-    public static byte[][] KeyExpansion(byte[] key){ // key is 32 bytes
+    private static byte[][] KeyExpansion(byte[] key){ // key is 32 bytes
         
         byte [][] w = new byte[4 * (Nr + 1)][4]; // The output array of words; key schedule
         
@@ -206,7 +206,7 @@ public class Encrypt {
     // - KeyExpansion is called outside of Cipher()
     // - Nr is set outside of Cipher()
     // - in is 256 bits, or 16 bytes worth of data in array form
-    public Matrix Cipher(byte [] in, int Nr, byte[][] w){
+    private Matrix Cipher(byte [] in, int Nr, byte[][] w){
 
         Matrix state = makeState(in);
         state = AddRoundKey(state, w);

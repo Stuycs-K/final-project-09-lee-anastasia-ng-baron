@@ -10,9 +10,10 @@ public class Decrypt {
         key = k;
     }
 
-    private static int Nr = 14; // Nr is 14 for AES 256, number of rounds
-    private static int Nk = 8; // Nk is 8 for AES 256, key length in words
-    private static byte [][] Rcon = {{0x01, 0x00, 0x00, 0x00},
+    private static int Nr = 10; // Nr is 14 for AES 256, number of rounds
+    private static int Nk = 4; // Nk is 8 for AES 256, key length in words
+    private static byte [][] Rcon = {{},
+                                    {0x01, 0x00, 0x00, 0x00},
                                     {0x02, 0x00, 0x00, 0x00},
                                     {0x04, 0x00, 0x00, 0x00},
                                     {0x08, 0x00, 0x00, 0x00},
@@ -68,6 +69,7 @@ public class Decrypt {
 
     private static Matrix InvShiftRows(Matrix m){
 
+        System.out.println (m.toHexString());
         byte [] c1 = m.get(0);
         byte [] c2 = m.get(1);
         byte [] c3 = m.get(2);
@@ -162,7 +164,7 @@ public class Decrypt {
     // variables:
     // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
     // j = index for the Rconstants ; 1 ≤ j ≤ 10
-    private static byte[][] KeyExpansion(byte[] key){ // key is 32 bytes
+    public static byte[][] KeyExpansion(byte[] key){ // key is 32 bytes
         
         byte [][] w = new byte[4 * (Nr + 1)][4]; // The output array of words; key schedule
         
@@ -184,11 +186,6 @@ public class Decrypt {
             i++;
         }
         return w; // if I am understanding this correctly, this should be be 60 x 4, enough for (Nr + 1) round keys!
-    }
-
-    private static byte[][] KeyExpansionEIC(byte[] key){ // key is 32 bytes
-        
-        return new byte[1][1];
     }
     
     // Used by KeyExpansion()
@@ -213,13 +210,13 @@ public class Decrypt {
     // - KeyExpansion is called outside of Cipher()
     // - Nr is set outside of Cipher()
     // - in is 256 bits, or 16 bytes worth of data in array form
-    private Matrix InvCipher(byte [] in, int Nr, byte[][] w){
+    public Matrix InvCipher(byte [] in, int Nr, byte[][] w){
 
         Matrix state = makeState(in);
         state = AddRoundKey(state, w);
 
         // state <- round key addition
-        for (round = Nr -1; round >= 1; round--){ // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
+        for (round = Nr - 1; round >= 1; round--){ // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
             state = InvShiftRows(state);
             state = InvSubBytes(state);
             state = AddRoundKey(state, w);

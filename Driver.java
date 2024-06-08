@@ -27,22 +27,23 @@ public class Driver {
                 // System.out.println (t.AES256(s1, s2));
                 // System.out.println (t.AES256(s1, s2).toSuperString());
             }
-            //System.out.println(encrypted);
+            System.out.println(encrypted);
 
+        } else if (args[0].equals("decrypt")){
+           
             // -------- Below is for testing using byte arrays -----------
-
-            Encrypt t = new Encrypt("", "");
             
-            byte[] state = new byte[] {0x32, 0x43, (byte)0xf6, (byte)0xa8, (byte)0x88, 0x5a, 0x30, (byte)0x8d, 0x31, 0x31, (byte)0x98, (byte)0xa2, (byte)0xe0, 0x37, 0x07, 0x34};
+            Decrypt t = new Decrypt("", "");
+            
+            byte[] state = new byte[] {0x39, 0x25, (byte)0x84, 0x1d, 0x02, (byte)0xdc, 0x09, (byte)0xfb, (byte)0xdc, 0x11, (byte)0x85, (byte)0x97, 0x19, 0x6a, 0x0b, 0x32};
             byte[] key = new byte[]{0x2b, 0x7e, 0x15, 0x16, 0x28, (byte)0xae, (byte)0xd2, (byte)0xa6, (byte)0xab, (byte)0xf7, 0x15, (byte)0x88, 0x09, (byte)0xcf, 0x4f, 0x3c};
             
             byte [][] expanded_key = t.KeyExpansion(key);
             System.out.println ("-------------------");
-            System.out.println ((t.Cipher(state, 10, expanded_key)).toHexString());
+            System.out.println ((t.InvCipher(state, 10, expanded_key)).toHexString());
             System.out.println ("-------------------");
 
-        } else if (args[0].equals("decrypt")){
-           
+
         }
 
     }
