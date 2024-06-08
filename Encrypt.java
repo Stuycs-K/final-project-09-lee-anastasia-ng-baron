@@ -10,8 +10,8 @@ public class Encrypt {
         key = k;
     }
 
-    private static int Nr = 14; // Nr is 14 for AES 256, number of rounds
-    private static int Nk = 8; // Nk is 8 for AES 256, key length in words
+    private static int Nr = 10; // Nr is 14 for AES 256, number of rounds
+    private static int Nk = 4; // Nk is 8 for AES 256, key length in words
     private static byte [][] Rcon = {{},
                                     {0x01, 0x00, 0x00, 0x00},
                                     {0x02, 0x00, 0x00, 0x00},
@@ -158,7 +158,7 @@ public class Encrypt {
     // variables:
     // i = index for the output array of words ; 0 ≤ i < 4 ∗ (Nr + 1)
     // j = index for the Rconstants ; 1 ≤ j ≤ 10
-    private static byte[][] KeyExpansion(byte[] key){ // key is 32 bytes
+    public static byte[][] KeyExpansion(byte[] key){ // key is 32 bytes
         
         byte [][] w = new byte[4 * (Nr + 1)][4]; // The output array of words; key schedule
         
@@ -206,7 +206,7 @@ public class Encrypt {
     // - KeyExpansion is called outside of Cipher()
     // - Nr is set outside of Cipher()
     // - in is 256 bits, or 16 bytes worth of data in array form
-    private Matrix Cipher(byte [] in, int Nr, byte[][] w){
+    public Matrix Cipher(byte [] in, int Nr, byte[][] w){
 
         Matrix state = makeState(in);
         state = AddRoundKey(state, w);
@@ -255,12 +255,8 @@ public class Encrypt {
     }
 
     public static void main(String[] args) {
-        byte[] state = new byte[]{0x32, 0x43, (byte)0xf6, (byte)0xa8, (byte)0x88, 0x5a, 0x30, (byte)0x8d, 0x31, 0x31, (byte)0x98, (byte)0xa2, (byte)0xe0, 0x37, 0x07, 0x34};
-        byte[] key = new byte[]{0x60, 0x3d, (byte)0xeb, 0x10, 0x15, (byte)0xca, 0x71, (byte)0xbe, 0x2b, 0x73, (byte)0xae, (byte)0xf0, (byte)0x85, 0x7d, 0x77, (byte)0x81, 0x1f, 0x35, 0x2c, 0x07, 0x3b, 0x61, 0x08, (byte)0xd7, 0x2d, (byte)0x98, 0x10, (byte)0xa3, 0x09, 0x14, (byte)0xdf, (byte)0xf4};
-        byte[] state2 = new byte[] {0x32, 0x43, (byte)0xf6, (byte)0xa8, (byte)0x88, 0x5a, 0x30, (byte)0x8d, 0x31, 0x31, (byte)0x98, (byte)0xa2, (byte)0xe0, 0x37, 0x07, 0x34};
-        byte[][] roundkey = new byte[][]{{0x2b, 0x7e, 0x15, 0x16}, {0x28, (byte)0xae, (byte)0xd2, (byte)0xa6}, {(byte)0xab, (byte)0xf7, 0x15, (byte)0x88}, {0x09, (byte)0xcf, 0x4f, 0x3c}};
-        
-        Matrix ex = makeState(new byte[]{0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3});
+
+        //Matrix ex = makeState(new byte[]{0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3});
         //System.out.println(makeState(state2).toHexString() + "\n");
         //System.out.println((ShiftRows(ex)).toHexString());
         //System.out.println (String.format("%05X", sbox[0x20 & 0xff]));

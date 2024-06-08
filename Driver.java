@@ -27,13 +27,20 @@ public class Driver {
                 // System.out.println (t.AES256(s1, s2));
                 // System.out.println (t.AES256(s1, s2).toSuperString());
             }
-            System.out.println(encrypted);
+            //System.out.println(encrypted);
 
             // -------- Below is for testing using byte arrays -----------
+
             Encrypt t = new Encrypt("", "");
-            byte[] state = new byte[]{0x32, 0x43, (byte)0xf6, (byte)0xa8, (byte)0x88, 0x5a, 0x30, (byte)0x8d, 0x31, 0x31, (byte)0x98, (byte)0xa2, (byte)0xe0, 0x37, 0x07, 0x34};
-            byte[] key = new byte[]{0x60, 0x3d, (byte)0xeb, 0x10, 0x15, (byte)0xca, 0x71, (byte)0xbe, 0x2b, 0x73, (byte)0xae, (byte)0xf0, (byte)0x85, 0x7d, 0x77, (byte)0x81, 0x1f, 0x35, 0x2c, 0x07, 0x3b, 0x61, 0x08, (byte)0xd7, 0x2d, (byte)0x98, 0x10, (byte)0xa3, 0x09, 0x14, (byte)0xdf, (byte)0xf4};
-            System.out.println (t.AES256(state,key).toHexString());
+            
+            byte[] state = new byte[] {0x32, 0x43, (byte)0xf6, (byte)0xa8, (byte)0x88, 0x5a, 0x30, (byte)0x8d, 0x31, 0x31, (byte)0x98, (byte)0xa2, (byte)0xe0, 0x37, 0x07, 0x34};
+            byte[] key = new byte[]{0x2b, 0x7e, 0x15, 0x16, 0x28, (byte)0xae, (byte)0xd2, (byte)0xa6, (byte)0xab, (byte)0xf7, 0x15, (byte)0x88, 0x09, (byte)0xcf, 0x4f, 0x3c};
+            
+            byte [][] expanded_key = t.KeyExpansion(key);
+            System.out.println ("-------------------");
+            System.out.println ((t.Cipher(state, 10, expanded_key)).toHexString());
+            System.out.println ("-------------------");
+
         } else if (args[0].equals("decrypt")){
            
         }
