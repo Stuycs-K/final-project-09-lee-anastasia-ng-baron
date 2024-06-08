@@ -238,4 +238,9 @@ public class Decrypt {
         return InvCipher(input, Nr, expanded_key);
     }
 
+    public static void main(String[] args) {
+        Matrix m = makeState(new byte []{0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3});
+
+        System.out.println (InvShiftRows(m).toIntString());
+    }
 }
