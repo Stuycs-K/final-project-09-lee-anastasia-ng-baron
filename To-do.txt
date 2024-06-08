@@ -1,5 +1,3 @@
-- check Subbytes for Decrypt using Encrypt test output
-- check mixcolumns for Decrypt using Encrypt test output
 - Ensure Decrypt work properly
 - Create script for Presentation
 - Create slides for Presentation on Encryption
