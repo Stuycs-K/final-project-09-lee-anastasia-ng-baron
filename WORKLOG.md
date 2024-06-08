@@ -106,6 +106,10 @@
 
 - Fixed KeyExpansion and Tested
 
+### 6/7/24
+
+- Checked individual functions for Encrypt
+
 ## Sources
 - https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
 - https://nvlpubs.nist.gov/nistpubs/jres/126/jres.126.024.pdf

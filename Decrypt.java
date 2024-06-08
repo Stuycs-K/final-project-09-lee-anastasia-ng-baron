@@ -143,12 +143,10 @@ public class Decrypt {
         for (int c = 0; c < 4; c++) {
             
             byte[] before = state.m.get(c);
-            int index = 4 * round + c; // round comes from Cipher()
+            int index = (4 * round) + c; // round comes from Cipher()
             byte[] word = w[index];
             byte[] after = new byte[4];
-            for (int r = 0; r < 4; r++) {
-                after = XOR(before, word);
-            }
+            after = XOR(before, word);
 
             modified.addColumn(after[0], after[1], after[2], after[3]);
         }
@@ -175,15 +173,14 @@ public class Decrypt {
             i++;
         } // First Nk words of the expanded key, w, are the key itself
 
-        while (i <= 4 * Nr + 3){
-            byte[] temp = w[i - 1];
+        while (i <= 4 * Nr + 3){ // 15 as req number of rounds
+            byte[] temp = w[i - 1]; // researched from Wikipedia
             if (i % Nk == 0){
-                w[i] = XOR (SubWord(RotWord(temp)), Rcon[i / Nk]);
-            } else if (Nk > 6 && i % Nk == 4){
-                w[i] = SubWord(temp);
-            } else {
-                w[i] = XOR (w[i - Nk], temp);
+                temp = XOR (SubWord(RotWord(temp)), Rcon[i / Nk]);
+            } else if ((Nk > 6) && (i % Nk == 4)){
+                temp = SubWord(temp);
             }
+            w[i] = XOR (w[i - Nk], temp);
             i++;
         }
         return w; // if I am understanding this correctly, this should be be 60 x 4, enough for (Nr + 1) round keys!
@@ -232,30 +229,6 @@ public class Decrypt {
         state = InvSubBytes(state);
         // MixColumns() is omitted; idk what that means
         state = AddRoundKey(state, w);
-        return state;
-    }
-
-
-    // I've got no clue what this does, but im just gonna leave it here
-    private Matrix EqInvCipher(byte [] in, int Nr, byte[][] dw){
-
-        Matrix state = makeState(in);
-        state = AddRoundKey(state, dw);
-
-        // state <- round key addition
-        for (round = Nr -1; round >= 1; round--){ // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
-            state = InvSubBytes(state);
-            state = InvShiftRows(state);
-            state = InvMixColumns(state);
-            state = AddRoundKey(state,dw);
-        }
-        state = InvSubBytes(state);
-        state = InvShiftRows(state);
-        // MixColumns() is omitted; idk what that means
-        state = AddRoundKey(state, dw); // 0
-        state = AddRoundKey(state, dw); // 1
-        state = AddRoundKey(state, dw); // 2
-        state = AddRoundKey(state, dw); // 3
         return state;
     }
 
