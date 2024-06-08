@@ -70,7 +70,6 @@ public class Decrypt {
 
     private static Matrix InvShiftRows(Matrix m) {
 
-        System.out.println(m.toHexString());
         byte[] c1 = m.get(0);
         byte[] c2 = m.get(1);
         byte[] c3 = m.get(2);
@@ -250,6 +249,9 @@ public class Decrypt {
         //System.out.println (InvShiftRows(m).toIntString());
 
         Matrix state = makeState(new byte[]{0x04, 0x66, (byte)0x81, (byte)0xe5, (byte)0xe0, (byte)0xcb, 0x19, (byte)0x9a, 0x48, (byte)0xf8, (byte)0xd3, 0x7a, 0x28, 0x06, 0x26, 0x4c});
-        System.out.println (InvMixColumns(state).toHexString());
+        //System.out.println (InvMixColumns(state).toHexString());
+
+        Matrix state2 = makeState(new byte[]{(byte)0xd4, 0x27, 0x11, (byte)0xae, (byte)0xe0, (byte)0xbf, (byte)0x98, (byte)0xf1, (byte)0xb8, (byte)0xb4, 0x5d, (byte)0xe5, 0x1e, 0x41, 0x52, 0x30});
+        System.out.println (InvSubBytes(state2).toHexString());
     }
 }
