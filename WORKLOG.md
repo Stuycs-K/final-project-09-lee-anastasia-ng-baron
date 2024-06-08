@@ -108,7 +108,7 @@
 
 ### 6/7/24
 
-- Checked individual functions for Encrypt
+- Checked individual functions for Encrypt.java
 
 ## Sources
 - https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
