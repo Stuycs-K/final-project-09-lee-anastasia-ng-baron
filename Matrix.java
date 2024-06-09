@@ -76,11 +76,12 @@ public class Matrix {
     }
 
     for (int i=0; i<4; i++) {
-      for (byte[] p : m) {
-        String s1 = String.format("%05X", (p[i] & 0xff)).substring(3,5);
+      byte[] c = m.get(i);
+      for (byte b:c) {
+        String s1 = String.format("%05X", (b & 0xff)).substring(3,5);
         s+= s1 + " ";
       }
-      s+= "\n";
+      s += "\n";
     }
     return s;
   }
@@ -92,10 +93,11 @@ public class Matrix {
     }
 
     for (int i=0; i<4; i++) {
-      for (byte[] p : m) {
-        s+= (int)p[i] + " ";
+      byte[] c = m.get(i);
+      for (byte b:c) {
+        s += (b < 0 ? 256 + b : b) + " ";
       }
-      s+= "\n";
+      s += "\n";
     }
     return s;
   }

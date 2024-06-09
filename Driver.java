@@ -10,11 +10,14 @@ public class Driver {
         // args[3] keyFile
         // args[4] outputFile
         
-        // String s1 = "";
-        // String s2 = "";
-        boolean check = (args[1] == null) || (args[2] == null) || (args[3] == null) || (args[4] == null);
+        boolean check1 = (args[1].equals("byte")) || (args[1].equals("hex")) || (args[1].equals("text"));
+        boolean check = (args[2] == null) || (args[3] == null) || (args[4] == null);
+        if (!check1) {
+            System.out.println("Invalid type");
+            return;
+        }
         if (check) {
-            System.out.println("Some parameters are missing. Please try again.");
+            System.out.println("Some parameters are missing");
             return;
         }
 
@@ -24,7 +27,7 @@ public class Driver {
             System.out.println("The key is not the correct length of 32");
             return;
         }
-        FileWriter cipher = new FileWriter(args[4]);
+        FileWriter output = new FileWriter(args[4]);
 
         int newLength = 16*(int)Math.ceil(input.length/16.0);
         byte[] padded = new byte[newLength];
@@ -37,14 +40,26 @@ public class Driver {
         }
 
         if (args[0].equals("encrypt")){
-            String encrypted = "";
             for (int i = 0; i < padded.length; i+=16) { // encrypts for each block of 16 bytes
+                byte[] seg = new byte[16];
+                for (int j = i; j < i+16; j++) {
+                    seg[j % 16] = padded[j];
+                }
+                Encrypt t = new Encrypt(seg, key);
+                if (args[1].equals("byte")) {
+                    output.append(t.AES256(seg, key).toIntString());
+                }
+                else if (args[1].equals("hex")) {
+                    output.append(t.AES256(seg, key).toHexString());
+                }
+                else if (args[1].equals("text")) {
+                    output.append(t.AES256(seg, key).toSuperString());
+                }
                 
-                encrypted += t.AES256(seg, key).toSuperString();
                 // System.out.println (t.AES256(s1, s2));
                 // System.out.println (t.AES256(s1, s2).toSuperString());
             }
-            System.out.println(encrypted);
+            output.close();
 
         } else if (args[0].equals("decrypt")){
            

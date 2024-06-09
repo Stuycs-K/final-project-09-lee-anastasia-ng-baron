@@ -232,22 +232,6 @@ public class Encrypt {
         return Cipher(input, Nr, expanded_key);
     }
 
-    private static Matrix AddSingleRoundKey(Matrix state, byte[][] w){
-
-        Matrix modified = new Matrix();
-
-        for (int c = 0; c < 4; c++) {
-            
-            byte[] before = state.m.get(c);
-            byte[] word = w[c];
-            byte[] after = new byte[4];
-            after = XOR(before, word);
-
-            modified.addColumn(after[0], after[1], after[2], after[3]);
-        }
-        return modified;
-    }
-
     public static void main(String[] args) {
 
         //Matrix ex = makeState(new byte[]{0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3});
@@ -257,7 +241,6 @@ public class Encrypt {
     }
 
     
-
     public static String keyScheduleToString(byte [][] key) {
         String s = "";
     
