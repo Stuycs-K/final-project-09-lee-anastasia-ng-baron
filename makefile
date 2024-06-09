@@ -1,8 +1,10 @@
 default:
 
+	@echo "AES-256 encryption and decryption:"
 	@echo "make encrypt ARGS="type inputFile keyFile outputFile" -> Encrypts input using key"
 	@echo "make decrypt ARGS="type inputFile keyFile outputFile" -> Decrypts input using key"
-	@echo "output type options are byte, hex, ASCII"
+	@echo "Key must have length 32 bytes"
+	@echo "Output type options are byte, hex, text"
 
 encrypt: Encrypt.class Matrix.class Driver.class
 

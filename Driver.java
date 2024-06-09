@@ -17,26 +17,30 @@ public class Driver {
             System.out.println("Some parameters are missing. Please try again.");
             return;
         }
-        
-        // if (args[1] != null && args[2] != null){
-        //     s1 = args[1];
-        //     while (s1.length() % 16 != 0) {
-        //         s1 += " ";
-        //     }
 
-        //     if (args[2].length() == 32){
-        //         s2 = args[2];
-        //     } else {
-        //         System.out.println ("The Key is not the correct length of 32: " + args[2]);
-        //         return;
-        //     }
-        // }
+        byte[] input = Files.readAllBytes(Paths.get(args[2]));
+        byte[] key = Files.readAllBytes(Paths.get(args[3]));
+        if (key.length != 32) {
+            System.out.println("The key is not the correct length of 32");
+            return;
+        }
+        FileWriter cipher = new FileWriter(args[4]);
+
+        int newLength = 16*(int)Math.ceil(input.length/16.0);
+        byte[] padded = new byte[newLength];
+        for (int i = 0; i < input.length; i++) {
+            padded[i] = input[i];
+        }
+
+        for (int i = input.length; i < newLength; i++) {
+            padded[i] = (byte)0x20;
+        }
 
         if (args[0].equals("encrypt")){
             String encrypted = "";
-            for (int i = 0; i < s1.length(); i+=16) { // encrypts for each block of 16 bytes
-                Encrypt t = new Encrypt(s1.substring(i, i+16), s2);
-                encrypted += t.AES256(s1.substring(i, i+16), s2).toSuperString();
+            for (int i = 0; i < padded.length; i+=16) { // encrypts for each block of 16 bytes
+                
+                encrypted += t.AES256(seg, key).toSuperString();
                 // System.out.println (t.AES256(s1, s2));
                 // System.out.println (t.AES256(s1, s2).toSuperString());
             }

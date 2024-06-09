@@ -2,10 +2,10 @@ import java.util.Arrays;
 
 public class Encrypt {
 
-    private String input;
-    private String key;
+    private byte[] input;
+    private byte[] key;
 
-    public Encrypt (String in, String k){
+    public Encrypt (byte[] in, byte[] k){
         input = in;
         key = k;
     }
@@ -226,12 +226,6 @@ public class Encrypt {
     }
 
     // The Wrapper function for everything
-    public Matrix AES256 (String s, String k){
-        byte[] input = s.getBytes();
-        byte[] key = k.getBytes();
-        byte [][] expanded_key = KeyExpansion(key);
-        return Cipher(input, Nr, expanded_key);
-    }
 
     public Matrix AES256 (byte[] input, byte[] key){
         byte [][] expanded_key = KeyExpansion(key);
