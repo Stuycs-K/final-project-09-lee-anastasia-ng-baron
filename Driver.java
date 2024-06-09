@@ -2,6 +2,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.*;
 
 public class Driver {
     public static void main (String [] args) throws IOException {
@@ -21,8 +22,23 @@ public class Driver {
             return;
         }
 
-        byte[] input = Files.readAllBytes(Paths.get(args[2]));
-        byte[] key = Files.readAllBytes(Paths.get(args[3]));
+        byte[] input;
+        byte[] key;
+        
+        if (args[1].equals("hex")) {
+            String s = Files.readString(Paths.get(args[2]));
+            s = s.replaceAll("\\s", "");
+            input = HexFormat.of().parseHex(s);
+
+            String s1 = Files.readString(Paths.get(args[3]));
+            s1 = s1.replaceAll("\\s", "");
+            key = HexFormat.of().parseHex(s1);
+        }
+        else {
+            input = Files.readAllBytes(Paths.get(args[2]));
+            key = Files.readAllBytes(Paths.get(args[3]));
+        }
+        
         if (key.length != 32) {
             System.out.println("The key is not the correct length of 32");
             return;
@@ -41,6 +57,9 @@ public class Driver {
 
         if (args[0].equals("encrypt")){
             for (int i = 0; i < padded.length; i+=16) { // encrypts for each block of 16 bytes
+                if (i != 0) {
+                    output.append("\n");
+                }
                 byte[] seg = new byte[16];
                 for (int j = i; j < i+16; j++) {
                     seg[j % 16] = padded[j];
@@ -50,14 +69,11 @@ public class Driver {
                     output.append(t.AES256(seg, key).toIntString());
                 }
                 else if (args[1].equals("hex")) {
-                    output.append(t.AES256(seg, key).toHexString());
+                    output.append(t.AES256(seg, key).toHexString().trim());
                 }
                 else if (args[1].equals("text")) {
                     output.append(t.AES256(seg, key).toSuperString());
                 }
-                
-                // System.out.println (t.AES256(s1, s2));
-                // System.out.println (t.AES256(s1, s2).toSuperString());
             }
             output.close();
 

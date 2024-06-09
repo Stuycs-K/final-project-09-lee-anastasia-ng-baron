@@ -112,5 +112,6 @@
 
 ## Sources
 - https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
+- https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/AES_Core256.pdf
 - https://nvlpubs.nist.gov/nistpubs/jres/126/jres.126.024.pdf
-- https://www.devglan.com/online-tools/aes-encryption-decryption
+- https://www.di-mgt.com.au/cryptopad.html
