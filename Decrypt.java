@@ -2,10 +2,10 @@ import java.util.*;
 
 public class Decrypt {
 
-    private String input;
-    private String key;
+    private byte[] input;
+    private byte[] key;
 
-    public Decrypt(String in, String k) {
+    public Decrypt(byte[] in, byte[] k) {
         input = in;
         key = k;
     }
@@ -236,9 +236,7 @@ public class Decrypt {
     }
 
     // The Wrapper function for everything
-    public Matrix AES256(String s, String k) {
-        byte[] input = s.getBytes();
-        byte[] key = k.getBytes();
+    public Matrix AES256(byte[] input, byte[] key) {
         byte[][] expanded_key = KeyExpansion(key); // KeyExpansion is supposedly the same
         return InvCipher(input, Nr, expanded_key);
     }
