@@ -1,7 +1,8 @@
 default:
 
-	@echo "make encrypt ARGS='input key' -> Encrypts input using key"
-	@echo "make decrypt ARGS='input key' -> Decrypts input using key"
+	@echo "make encrypt ARGS="type inputFile keyFile outputFile" -> Encrypts input using key"
+	@echo "make decrypt ARGS="type inputFile keyFile outputFile" -> Decrypts input using key"
+	@echo "output type options are byte, hex, ASCII"
 
 encrypt: Encrypt.class Matrix.class Driver.class
 
