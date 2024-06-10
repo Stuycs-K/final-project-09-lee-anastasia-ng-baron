@@ -11,8 +11,11 @@ Topic: Advanced Encryption Standard (AES) - ECB Mode
 Our project is an implementation of the Advanced Encryption Standard (AES) encryption and decryption algorithms, specifically AES-256 in the Electronic Codebook (ECB) mode. The robust key length (256 bits) of AES-256 makes it the most secure encryption algorithm available today. Since it is nearly impossible to break through brute force attacks, there is no cracking algorithm, but we implemented the decryption algorithm which requires the key.
 
 ## Instructions
-Use the makefile recipes below to use the encrypt and decrypt functions:
-# [INSERT MAKEFILE RECIPES]
+Use the makefile recipes below to use the encrypt and decrypt functions. Note that the two options for each mode are STRING and FILE, and for STRING, the output is printed to terminal, while for FILE, the output is written to the specified output file.
+"make encrypt ARGS="STRING inputString keyString" -> Encrypts input using key"
+"make encrypt ARGS="FILE inputFile keyFile outputFile" -> Encrypts input using key"
+"make decrypt ARGS="STRING inputString keyString" -> Decrypts input using key"
+"make decrypt ARGS="FILE inputFile keyFile outputFile" -> Decrypts input using key"
 
 Note that the key must be 32 bytes.
 
