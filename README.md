@@ -23,5 +23,5 @@ Use the makefile recipes below to use the encrypt and decrypt functions. Note th
 
 Note that the key must be 32 bytes.
 
-# [Presentation Video](insert link)
+[Presentation Video](https://drive.google.com/file/d/1QkKnEOoTEcPQaIxCbf6bHsYU6dHmPiJU/view?usp=sharing)
 [Presentation Slides](https://docs.google.com/presentation/d/1nhmdrG2L3amadkLpIs5oIHMFsc172JzwVckqLFe0w5A/edit?usp=sharing)
