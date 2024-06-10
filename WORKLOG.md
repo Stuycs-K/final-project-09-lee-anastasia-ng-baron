@@ -115,3 +115,4 @@
 - https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/AES_Core256.pdf
 - https://nvlpubs.nist.gov/nistpubs/jres/126/jres.126.024.pdf
 - https://www.di-mgt.com.au/cryptopad.html
+- https://www.kiteworks.com/risk-compliance-glossary/aes-256-encryption/
