@@ -6,5 +6,15 @@ Anastasia Lee, Baron Ng
 Group Name: Cryptic BarLee
 
 Topic: Advanced Encryption Standard (AES) - ECB Mode
+
 ## Overview
+Our project is an implementation of the Advanced Encryption Standard (AES) encryption and decryption algorithms, specifically AES-256 in the Electronic Codebook (ECB) mode. The robust key length (256 bits) of AES-256 makes it the most secure encryption algorithm available today. Since it is nearly impossible to break through brute force attacks, there is no cracking algorithm, but we implemented the decryption algorithm which requires the key.
+
 ## Instructions
+Use the makefile recipes below to use the encrypt and decrypt functions:
+# [INSERT MAKEFILE RECIPES]
+
+Note that the key must be 32 bytes.
+
+# [Presentation Video](insert link)
+[Presentation Slides](https://docs.google.com/presentation/d/1nhmdrG2L3amadkLpIs5oIHMFsc172JzwVckqLFe0w5A/edit?usp=sharing)
