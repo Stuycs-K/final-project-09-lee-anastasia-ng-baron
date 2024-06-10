@@ -198,17 +198,14 @@ public class Encrypt {
         return b;
     }
 
-    // - KeyExpansion is called outside of Cipher()
-    // - Nr is set outside of Cipher()
-    // - in is 256 bits, or 16 bytes worth of data in array form
+    
     public Matrix Cipher(byte [] in, int Nr, byte[][] w){
 
         Matrix state = makeState(in);
-        System.out.println (state.toHexString());
         state = AddRoundKey(state, w);
         
         // state <- round key addition
-        for (round = 1; round <= Nr - 1; round++){ // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
+        for (round = 1; round <= Nr - 1; round++){
             state = SubBytes(state);
             state = ShiftRows(state);
             state = MixColumns(state);
@@ -216,7 +213,6 @@ public class Encrypt {
         }
         state = SubBytes(state);
         state = ShiftRows(state);
-        // MixColumns() is omitted; idk what that means
         state = AddRoundKey(state, w);
         return state;
     }

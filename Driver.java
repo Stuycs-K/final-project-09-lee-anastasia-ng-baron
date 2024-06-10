@@ -1,13 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
 
 public class Driver {
     public static void main (String [] args) throws IOException {
@@ -30,6 +24,8 @@ public class Driver {
             FileInputStream keyFIR = new FileInputStream(new File(args[3]));
             input = inputFIR.readAllBytes();
             key = keyFIR.readAllBytes();
+            inputFIR.close();
+            keyFIR.close();
         } else {
             System.out.println("Invalid Input mode. Choose FILE or STRING.");
             return;
@@ -59,24 +55,21 @@ public class Driver {
         if (args[0].equals("encrypt")){
 
             byte[] encrypted = new byte[paddedLength];
-
             for (int i = 0; i < paddedLength; i+=16){
-
                 Encrypt t = new Encrypt();
-                Matrix result = t.AES256(input, key);
-                System.out.println (result.toHexString());
-
+                byte [] b = new byte[]{padded[i], padded[i+1], padded[i+2], padded[i+3], padded[i+4], padded[i+5], padded[i+6], padded[i+7], padded[i+8], padded[i+9], padded[i+10], padded[i+11], padded[i+12], padded[i+13], padded[i+14], padded[i+15]};
+                Matrix result = t.AES256(b, key);
                 for (int j = 0; j < 4; j++){ // move the encrypted results into a single byte array
-                    encrypted[16 * i + j] = result.get(0)[j];
+                    encrypted[i + j] = result.get(0)[j];
                 }
                 for (int j = 0; j < 4; j++){
-                    encrypted[16 * i + 4 + j] = result.get(1)[j];
+                    encrypted[i + 4 + j] = result.get(1)[j];
                 }
                 for (int j = 0; j < 4; j++){
-                    encrypted[16 * i + 8 + j] = result.get(2)[j];
+                    encrypted[i + 8 + j] = result.get(2)[j];
                 }
                 for (int j = 0; j < 4; j++){
-                    encrypted[16 * i + 12 + j] = result.get(3)[j];
+                    encrypted[i + 12 + j] = result.get(3)[j];
                 }
 
             }
@@ -110,24 +103,23 @@ public class Driver {
         else if (args[0].equals("decrypt")){
 
             byte[] decrypted = new byte[paddedLength];
-
             for (int i = 0; i < paddedLength; i+=16){
 
                 Decrypt t = new Decrypt();
-                Matrix result = t.AES256(input, key);
-                System.out.println (result.toHexString());
+                byte [] b = new byte[]{padded[i], padded[i+1], padded[i+2], padded[i+3], padded[i+4], padded[i+5], padded[i+6], padded[i+7], padded[i+8], padded[i+9], padded[i+10], padded[i+11], padded[i+12], padded[i+13], padded[i+14], padded[i+15]};
+                Matrix result = t.AES256(b, key);
 
                 for (int j = 0; j < 4; j++){ // move the decrypted results into a single byte array
-                    decrypted[16 * i + j] = result.get(0)[j];
+                    decrypted[i + j] = result.get(0)[j];
                 }
                 for (int j = 0; j < 4; j++){
-                    decrypted[16 * i + 4 + j] = result.get(1)[j];
+                    decrypted[i + 4 + j] = result.get(1)[j];
                 }
                 for (int j = 0; j < 4; j++){
-                    decrypted[16 * i + 8 + j] = result.get(2)[j];
+                    decrypted[i + 8 + j] = result.get(2)[j];
                 }
                 for (int j = 0; j < 4; j++){
-                    decrypted[16 * i + 12 + j] = result.get(3)[j];
+                    decrypted[i + 12 + j] = result.get(3)[j];
                 }
             }
 

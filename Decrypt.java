@@ -208,17 +208,13 @@ public class Decrypt {
         return b;
     }
 
-    // - KeyExpansion is called outside of Cipher()
-    // - Nr is set outside of Cipher()
-    // - in is 256 bits, or 16 bytes worth of data in array form
+    
     public Matrix InvCipher(byte[] in, int Nr, byte[][] w) {
 
         Matrix state = makeState(in);
-        System.out.println (state.toHexString());
         state = AddRoundKey(state, w);
 
-        // state <- round key addition
-        for (round = Nr - 1; round >= 1; round--) { // confirmed in AddRoundKey: 1 ≤ round ≤ Nr
+        for (round = Nr - 1; round >= 1; round--) {
             state = InvShiftRows(state);
             state = InvSubBytes(state);
             state = AddRoundKey(state, w);
@@ -226,9 +222,7 @@ public class Decrypt {
         }
         state = InvShiftRows(state);
         state = InvSubBytes(state);
-        // MixColumns() is omitted; idk what that means
         state = AddRoundKey(state, w);
-        System.out.println ("Decryption happening below"); 
         return state;
     }
 
