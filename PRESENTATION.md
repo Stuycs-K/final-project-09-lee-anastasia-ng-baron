@@ -42,23 +42,23 @@ For some of the transformations, each of the bytes in the state is considered to
 
 To multiply by greater elements, express them in binary, repeatedly use xTimes, and XOR the results
 
-### Structure of the algorithm
+### Functions of the algorithm
 A basic, simplified overview of the encryption and decryption algorithms is as follows:
 #### Encryption
-1. KeyExpansion()
-2. Cipher()
-   - SubBytes()
-   - ShiftRows()
-   - MixColumns()
-   - AddRoundKey()
+1. `KeyExpansion()`
+2. `Cipher()`
+   - `SubBytes()`
+   - `ShiftRows()`
+   - `MixColumns()`
+   - `AddRoundKey()`
 
 #### Decryption
-1. KeyExpansion()
-2. InvCipher()
-   - InvShiftRows()
-   - InvSubBytes()
-   - AddRoundKey()
-   - InvMixColumns()
+1. `KeyExpansion()`
+2. `InvCipher()`
+   - `InvShiftRows()`
+   - `InvSubBytes()`
+   - `AddRoundKey()`
+   - `InvMixColumns()`
 
 Symmetric key cipher: the same key is used for both encrypting and decrypting the data
 
@@ -73,7 +73,7 @@ Symmetric key cipher: the same key is used for both encrypting and decrypting th
 Inverse: use `indexOf()` to find the byte corresponding to the entry in the lookup table
 
 ### ShiftRows()
-Shift Rows moves each byte in a row r amount of spaces according to the row it is in (a byte in row 3 moves 3 spaces left). The bytes wrap around to the other side. The inverse would be to move the bytes the same amount of space to the right.
+`ShiftRows()` moves each byte in a row $r$ amount of spaces according to the row it is in (a byte in row 3 moves 3 spaces left). The bytes wrap around to the other side. The inverse would be to move the bytes the same amount of space to the right.
 
 ![alt text](images/SRows.png)
 
@@ -91,14 +91,13 @@ Inverse: multiply by the inverse of the fixed matrix
 ![alt text](images/image-2.png)
 
 ### KeyExpansion()
-Input:
-- the key
+Input: the key
 
 Using the 8 words from the 32-bit key we already have, we can make 52 new words. The goal is to have 15 round keys total and return them in as a key schedule, basically just a collection of round keys.
 
-Through RotWord, SubWord, Rcon, and XOR, the words are transformed to create these new round keys.
+Through `RotWord`, `SubWord`, `Rcon`, and `XOR`, the words are transformed to create these new round keys.
 
-The round keys are then used later by Cipher().
+The round keys are then used later by `Cipher()`.
 ![alt text](images/KExpansion.png)
 
 ### AddRoundKey()
@@ -108,19 +107,19 @@ Two inputs:
 
 Bytes from the state are simply XOR’ed with their corresponding bytes in the round key selected.
 
-AddRoundKey is its own inverse since it uses XOR and XOR is its own inverse.
+`AddRoundKey()` is its own inverse since it uses XOR and XOR is its own inverse.
 
 ![alt text](images/AddRKey.png)
 
 ### Cipher()
 
-Cipher() has three inputs:
+`Cipher()` has three inputs:
 - the input bytes to be encrypted
 - Nr, number of rounds
 - the key schedule
 
-Before Cipher() is ran, KeyExpansion() is ran to create the key schedule.
+Before `Cipher()` is ran, KeyExpansion() is ran to create the key schedule.
 
-Cipher() basically layers on ShiftRows(), SubBytes(),  Mixcolumns, and AddRoundKey() using the 15 round keys in the key schedule. The Inverse basically just uses all of the inverse functions to negate these transformations.
+`Cipher()` basically layers on `ShiftRows()`, `SubBytes()`,  `Mixcolumns()`, and `AddRoundKey()` using the 15 round keys in the key schedule. The Inverse basically just uses all of the inverse functions to negate these transformations.
 
 ![alt text](images/Cipher.png)
