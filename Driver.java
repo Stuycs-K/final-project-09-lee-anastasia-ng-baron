@@ -16,14 +16,6 @@ public class Driver {
         // args[2] inputFile / inputString
         // args[3] keyFile / keyString
         // args[4] outputFile
-        
-        if (!check0) {
-            System.out.println("Invalid. Choose encrypt or decrypt.");
-        }
-        if (check) {
-            System.out.println("Some parameters are missing.");
-            return;
-        }
 
         // -------------- Reading Input -----------------
 
@@ -45,65 +37,121 @@ public class Driver {
 
         // -------------- Padding the Input -----------------
 
-        // -------------- Reading Input -----------------
-
-        byte[] input;
-        byte[] key;
-
-        if (args[1].equals("STRING")){
-            input = args[2].getBytes();
-            key = args[3].getBytes();
-        } else if (args[1].equals("FILE")){
-            FileInputStream inputFIR = new FileInputStream(new File(args[2]));
-            FileInputStream keyFIR = new FileInputStream(new File(args[3]));
-            input = inputFIR.readAllBytes();
-            key = keyFIR.readAllBytes();
-        } else {
-            System.out.println("Invalid Input mode. Choose FILE or STRING.");
-            return;
-        }
-        
         if (key.length != 32) {
-            System.out.println("The key is not the correct length of 32");
+            System.out.println("The key is not the correct length of 32.");
             return;
         }
-
-        int newLength = 16*(int)Math.ceil(input.length/16.0);
-        byte[] padded = new byte[newLength];
-        for (int i = 0; i < input.length; i++) {
+    
+        // This padding works for both modes
+        int paddedLength = 16 * (int)Math.ceil(input.length/16.0);
+        //System.out.println (paddedLength - input.length);
+        byte[] padded = new byte[paddedLength];
+        
+        for (int i = 0; i < input.length; i++) { // fill up new array with contents
             padded[i] = input[i];
         }
-
-        for (int i = input.length; i < newLength; i++) {
-            padded[i] = (byte)0x20;
+        for (int i = input.length; i < paddedLength; i++) { // fill up the array with filler
+            padded[i] = (byte)0x20; // same as a space: " "
         }
 
-        // -------------- Encryption / Decryption -----------------
+        // -------------- Encryption -----------------
 
-        FileOutputStream output = new FileOutputStream(new File(args[4]));
+        if (args[0].equals("encrypt")){
 
-        for (int i = 0; i < padded.length; i+=16) { // encrypts for each block of 16 bytes
-            if (i != 0) {
-                output.append("\n");
+            byte[] encrypted = new byte[paddedLength];
+
+            for (int i = 0; i < paddedLength; i+=16){
+
+                Encrypt t = new Encrypt(input, key);
+                Matrix result = t.AES256(input, key);
+                System.out.println (result.toHexString());
+
+                for (int j = 0; j < 4; j++){ // move the encrypted results into a single byte array
+                    encrypted[16 * i + j] = result.get(0)[j];
+                }
+                for (int j = 0; j < 4; j++){
+                    encrypted[16 * i + 4 + j] = result.get(1)[j];
+                }
+                for (int j = 0; j < 4; j++){
+                    encrypted[16 * i + 8 + j] = result.get(2)[j];
+                }
+                for (int j = 0; j < 4; j++){
+                    encrypted[16 * i + 12 + j] = result.get(3)[j];
+                }
+
             }
-            byte[] seg = new byte[16];
-            for (int j = i; j < i+16; j++) {
-                seg[j % 16] = padded[j];
+
+            if (args[1].equals("STRING")){
+
+                String s = "";
+
+                for (int i = 0; i < paddedLength; i++){
+                    s += (char)(encrypted[i] & 0xff);
+                }
+
+                System.out.println (s);
+
+                FileOutputStream output = new FileOutputStream(new File(args[4]));
+                output.write(encrypted);
+                output.close();
+
+            } else if (args[1].equals("FILE")){
+                
+                FileOutputStream output = new FileOutputStream(new File(args[4]));
+                output.write(encrypted);
+                output.close();
+
             }
 
-            if (args[0].equals("encrypt")) {
-
-                Encrypt t = new Encrypt(seg, key);
-
-            } else if (args[0].equals("decrypt"){
-
-
-                output.write(padded);
-
-            }
         }
 
-        output.close();
+        // -------------- Decryption -----------------
+
+        else if (args[0].equals("decrypt")){
+
+            byte[] decrypted = new byte[paddedLength];
+
+            for (int i = 0; i < paddedLength; i+=16){
+
+                Decrypt t = new Decrypt(input, key);
+                Matrix result = t.AES256(input, key);
+                System.out.println (result.toHexString());
+
+                for (int j = 0; j < 4; j++){ // move the decrypted results into a single byte array
+                    decrypted[16 * i + j] = result.get(0)[j];
+                }
+                for (int j = 0; j < 4; j++){
+                    decrypted[16 * i + 4 + j] = result.get(1)[j];
+                }
+                for (int j = 0; j < 4; j++){
+                    decrypted[16 * i + 8 + j] = result.get(2)[j];
+                }
+                for (int j = 0; j < 4; j++){
+                    decrypted[16 * i + 12 + j] = result.get(3)[j];
+                }
+            }
+
+            if (args[1].equals("STRING")){
+
+                String s = "";
+
+                for (int i = 0; i < paddedLength; i++){
+                    s += (char)(decrypted[i] & 0xff);
+                }
+
+                System.out.println (s);
+
+            } else if (args[1].equals("FILE")){
+                
+                FileOutputStream output = new FileOutputStream(new File(args[4]));
+                output.write(decrypted);
+                output.close();
+
+            }
+
+        } else {
+            System.out.println("Invalid: encryption or decryption only.");
+        }
 
     }
 }

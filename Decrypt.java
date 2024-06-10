@@ -219,6 +219,7 @@ public class Decrypt {
     public Matrix InvCipher(byte[] in, int Nr, byte[][] w) {
 
         Matrix state = makeState(in);
+        System.out.println (state.toHexString());
         state = AddRoundKey(state, w);
 
         // state <- round key addition

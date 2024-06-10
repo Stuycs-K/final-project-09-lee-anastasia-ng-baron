@@ -209,6 +209,7 @@ public class Encrypt {
     private Matrix Cipher(byte [] in, int Nr, byte[][] w){
 
         Matrix state = makeState(in);
+        System.out.println (state.toHexString());
         state = AddRoundKey(state, w);
         
         // state <- round key addition

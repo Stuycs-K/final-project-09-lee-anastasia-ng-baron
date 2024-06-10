@@ -76,11 +76,11 @@ public class Matrix {
     }
 
     for (int i=0; i<4; i++) {
-      byte[] c = m.get(i);
-      for (byte b:c) {
-        s += String.format("%05X", (b & 0xff)).substring(3,5);
+      for (byte[] p : m) {
+        String s1 = String.format("%05X", (p[i] & 0xff)).substring(3,5);
+        s+= s1 + " ";
       }
-      s += " ";
+      s+= "\n";
     }
     return s;
   }
