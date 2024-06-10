@@ -2,12 +2,7 @@ import java.util.Arrays;
 
 public class Encrypt {
 
-    private byte[] input;
-    private byte[] key;
-
-    public Encrypt (byte[] in, byte[] k){
-        input = in;
-        key = k;
+    public Encrypt (){
     }
 
     private static int Nr = 14; // Nr is 14 for AES 256, number of rounds
@@ -206,7 +201,7 @@ public class Encrypt {
     // - KeyExpansion is called outside of Cipher()
     // - Nr is set outside of Cipher()
     // - in is 256 bits, or 16 bytes worth of data in array form
-    private Matrix Cipher(byte [] in, int Nr, byte[][] w){
+    public Matrix Cipher(byte [] in, int Nr, byte[][] w){
 
         Matrix state = makeState(in);
         System.out.println (state.toHexString());

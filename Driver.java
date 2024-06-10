@@ -62,7 +62,7 @@ public class Driver {
 
             for (int i = 0; i < paddedLength; i+=16){
 
-                Encrypt t = new Encrypt(input, key);
+                Encrypt t = new Encrypt();
                 Matrix result = t.AES256(input, key);
                 System.out.println (result.toHexString());
 
@@ -113,7 +113,7 @@ public class Driver {
 
             for (int i = 0; i < paddedLength; i+=16){
 
-                Decrypt t = new Decrypt(input, key);
+                Decrypt t = new Decrypt();
                 Matrix result = t.AES256(input, key);
                 System.out.println (result.toHexString());
 
@@ -152,6 +152,6 @@ public class Driver {
         } else {
             System.out.println("Invalid: encryption or decryption only.");
         }
-
+        
     }
 }

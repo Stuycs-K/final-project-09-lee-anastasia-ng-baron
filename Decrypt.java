@@ -2,12 +2,7 @@ import java.util.*;
 
 public class Decrypt {
 
-    private byte[] input;
-    private byte[] key;
-
-    public Decrypt(byte[] in, byte[] k) {
-        input = in;
-        key = k;
+    public Decrypt() {
     }
 
     private static int Nr = 10; // Nr is 14 for AES 256, number of rounds
