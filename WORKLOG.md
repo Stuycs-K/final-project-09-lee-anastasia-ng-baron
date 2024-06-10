@@ -44,6 +44,13 @@
 - Wrote InvMixColumns method as well as Times9, TimesB, TimesD, TimesE methods
 - Fixed Times3 method
 
+### 6/9/24
+- Attempted to implement new input/output system for Encrypt and Decrypt (edited makefile, Driver, Encrypt, Decrypt, Matrix)
+- Updated README
+- Added presentation notes to PRESENTATION.md
+- Worked on Google Slides presentation
+- Recorded video
+
 
 ## Baron Ng
 
