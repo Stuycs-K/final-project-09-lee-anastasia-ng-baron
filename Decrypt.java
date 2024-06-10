@@ -5,8 +5,8 @@ public class Decrypt {
     public Decrypt() {
     }
 
-    private static int Nr = 10; // Nr is 14 for AES 256, number of rounds
-    private static int Nk = 4; // Nk is 8 for AES 256, key length in words
+    private static int Nr = 14; // Nr is 14 for AES 256, number of rounds
+    private static int Nk = 8; // Nk is 8 for AES 256, key length in words
     private static byte[][] Rcon = { {},
             { 0x01, 0x00, 0x00, 0x00 },
             { 0x02, 0x00, 0x00, 0x00 },
@@ -228,6 +228,7 @@ public class Decrypt {
         state = InvSubBytes(state);
         // MixColumns() is omitted; idk what that means
         state = AddRoundKey(state, w);
+        System.out.println ("Decryption happening below"); 
         return state;
     }
 
