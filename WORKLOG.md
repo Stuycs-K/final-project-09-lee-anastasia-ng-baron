@@ -117,6 +117,17 @@
 
 - Checked individual functions for Encrypt.java
 
+### 6/8/24
+
+- Checked Encryption and Decryption Fully
+
+### 6/9/24
+
+- Created Presentation Slides
+- Edited Presentation.md
+- Recorded Video
+- Edited Video
+
 ## Sources
 - https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
 - https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/AES_Core256.pdf
