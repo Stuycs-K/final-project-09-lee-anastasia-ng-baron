@@ -84,10 +84,6 @@ public class Driver {
 
                 System.out.println (s);
 
-                FileOutputStream output = new FileOutputStream(new File(args[4]));
-                output.write(encrypted);
-                output.close();
-
             } else if (args[1].equals("FILE")){
                 
                 FileOutputStream output = new FileOutputStream(new File(args[4]));

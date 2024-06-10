@@ -12,9 +12,13 @@ Our project is an implementation of the Advanced Encryption Standard (AES) encry
 
 ## Instructions
 Use the makefile recipes below to use the encrypt and decrypt functions. Note that the two options for each mode are STRING and FILE, and for STRING, the output is printed to terminal, while for FILE, the output is written to the specified output file.
+
 "make encrypt ARGS="STRING inputString keyString" -> Encrypts input using key"
+
 "make encrypt ARGS="FILE inputFile keyFile outputFile" -> Encrypts input using key"
+
 "make decrypt ARGS="STRING inputString keyString" -> Decrypts input using key"
+
 "make decrypt ARGS="FILE inputFile keyFile outputFile" -> Decrypts input using key"
 
 Note that the key must be 32 bytes.
