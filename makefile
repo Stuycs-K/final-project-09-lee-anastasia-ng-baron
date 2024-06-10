@@ -1,7 +1,8 @@
 default:
 
 	@echo "AES-256 encryption and decryption:"
-	@echo "make encrypt ARGS="type inputFile keyFile outputFile" -> Encrypts input using key"
+	@echo "make encrypt ARGS="STRING inputFile keyFile" -> Encrypts input using key"
+	@echo "make encrypt ARGS="FILE inputFile keyFile outputFile" -> Encrypts input using key"
 	@echo "make decrypt ARGS="type inputFile keyFile outputFile" -> Decrypts input using key"
 	@echo "Key must have length 32 bytes"
 	@echo "Input/output type options are byte, hex, text"
