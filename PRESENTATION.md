@@ -1,7 +1,4 @@
 # This document is required.
-Put Anything relating to our presentation in here (besides the program).
-This includes research.
-
 ## Introduction
 AES (Advanced Encryption Standard) is the most secure encryption algorithm available today! We implemented AES-256 encryption and decryption.
 ### Brief history
@@ -22,7 +19,7 @@ AES (Advanced Encryption Standard) is the most secure encryption algorithm avail
 - WhatsApp messages
 
 ### Background/Definitions
-- Operates on a 4x4 column-major order matrix of 16 bytes called the state
+- Operates on a $4\times 4$ column-major order matrix of 16 bytes called the state
 ![alt text](state.png)
 - A word is an array of four bytes, often a row or column.
 - Key size specifies number of rounds:
@@ -30,7 +27,7 @@ AES (Advanced Encryption Standard) is the most secure encryption algorithm avail
   - 12 rounds for 192-bit keys
   - 14 rounds for 256-bit keys
   Longer key length makes AES-256 more secure because it is more resistant to brute force attacks!
-- For some of the transformations, each of the bytes in the state is considered to be one of the 256 elements of a Galois Field, denoted GF(2^8).
+- For some of the transformations, each of the bytes in the state is considered to be one of the 256 elements of a Galois Field, denoted $GF(2^8)$.
   - Addition: modulo 2 (XOR)
   - Multiplication: first consider multiplying by 2
   ![alt text](mult.png)
@@ -58,10 +55,10 @@ Symmetric key cipher: the same key is used for both encrypting and decrypting th
 
 ## Explanation of the algorithms
 ### SubBytes()
-- SubBytes is the process of substituting each byte in the state with its corresponding replacement byte in the S-Box.
-- Derived from the multiplicative inverse over GF(28) combined with an invertible affine transformation
+- `SubBytes()` is the process of substituting each byte in the state with its corresponding replacement byte in the S-Box.
+- Derived from the multiplicative inverse over $GF(2^8)$ combined with an invertible affine transformation
 - Good non-linearity properties
 - No fixed points (derangement)
 - No opposite fixed points
 - Replace each byte in the state with its entry in the lookup table
-- Inverse: use indexOf() to find the byte corresponding to the entry in the lookup table
+- Inverse: use `indexOf()` to find the byte corresponding to the entry in the lookup table
