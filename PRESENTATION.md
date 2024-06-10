@@ -62,3 +62,20 @@ Symmetric key cipher: the same key is used for both encrypting and decrypting th
 - No opposite fixed points
 - Replace each byte in the state with its entry in the lookup table
 - Inverse: use `indexOf()` to find the byte corresponding to the entry in the lookup table
+
+### ShiftRows()
+
+### MixColumns()
+- The four bytes of each column of the state are combined using an invertible linear transformation, helping to provide diffusion
+- Specifically, each column is multiplied by a fixed matrix
+[insert image]
+- Inverse: multiply by the inverse of the fixed matrix
+[insert image]
+
+### KeyExpansion()
+
+
+### AddRoundKey()
+
+
+### Cipher()
